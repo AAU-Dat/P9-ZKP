@@ -42,10 +42,10 @@ jobs:
       # Runs latex script
       - name: Compile LaTeX
         run: |
-          latexmk main.tex -pdf --shell-escape -synctex=1 -interaction=nonstopmode -f
+          pdflatex main.tex -pdf -shell-escape -synctex=1 -interaction=nonstopmode -f
           biber main
-          latexmk main.tex -pdf --shell-escape -synctex=1 -interaction=nonstopmode -f
-          latexmk main.tex -pdf --shell-escape -synctex=1 -interaction=nonstopmode -f
+          pdflatex main.tex -pdf -shell-escape -synctex=1 -interaction=nonstopmode -f
+          pdflatex main.tex -pdf -shell-escape -synctex=1 -interaction=nonstopmode -f
           dir
 
       # Save pdf as artifact
