@@ -4,13 +4,14 @@ on:
   push:
     branches:
       - 'main'
+    paths:
+      - 'report/**'
 
 permissions:
   id-token: write
 
 jobs:
   pdf:
-    needs: build
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     defaults:
@@ -55,17 +56,13 @@ jobs:
           name: docs
           path: ./report/src/main.pdf
           retention-days: 7
-  
-  build:
+
+  push:
+    needs: [pdf]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-  test:
-    needs: [pdf, build]
-    runs-on: ubuntu-latest
-    steps:
       - name: Download pdf artifact
         uses: actions/download-artifact@v3
         with:
