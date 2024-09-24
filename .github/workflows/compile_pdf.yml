@@ -77,7 +77,7 @@ jobs:
         run: |
           git config user.name Maltesius
           git config user.email andersmalta@gmail.com
+          git remote set-url origin https://AAU-Dat:$GITHUB_TOKEN@github.com/AAU-Dat/P9-ZKP
           git add /home/runner/work/P9-ZKP/P9-ZKP/report/src/main.pdf
           git commit -m "Added by GitHub Action"
-          git remote set-url --push origin https://AAU-Dat:$GITHUB_TOKEN@github.com/AAU-Dat/P9-ZKP
           git push
