@@ -11,6 +11,7 @@ on:
 permissions:
   id-token: write
   pages: write
+  contents: write
 
 jobs:
   pdf:
@@ -74,7 +75,7 @@ jobs:
         run: |
           git config --global user.name "Maltesius"
           git config --global user.email "andersmalta@gmail.com"
-          git remote set-url origin https://${{ secrets.AUTOPUSH }}@github.com/AAU-Dat/P9-ZKP.git
+          git remote set-url origin https://AAU-Dat:${{ secrets.GITHUB_TOKEN }}@github.com/AAU-Dat/P9-ZKP.git
           git add /home/runner/work/P9-ZKP/P9-ZKP/report/src/main.pdf
           git commit -m "Added by GitHub Action"
           git push
