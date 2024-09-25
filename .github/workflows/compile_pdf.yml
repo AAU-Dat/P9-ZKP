@@ -72,8 +72,8 @@ jobs:
           path: ./report/src/main.pdf
       - name: Push to repo
         run: |
-          git config user.name Maltesius
-          git config user.email andersmalta@gmail.com
+          git config --global user.name "Maltesius"
+          git config --global user.email "andersmalta@gmail.com"
           git remote set-url origin https://${{ secrets.AUTOPUSH }}@github.com/AAU-Dat/P9-ZKP.git
           git add /home/runner/work/P9-ZKP/P9-ZKP/report/src/main.pdf
           git commit -m "Added by GitHub Action"
