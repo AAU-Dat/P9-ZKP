@@ -48,6 +48,7 @@ jobs:
         run: |
           latexmk main.tex -pdf -shell-escape -synctex=1 -interaction=nonstopmode -f
           biber main
+          makeglossaries main
           latexmk main.tex -pdf -shell-escape -synctex=1 -interaction=nonstopmode -f
           latexmk main.tex -pdf -shell-escape -synctex=1 -interaction=nonstopmode -f
           dir
