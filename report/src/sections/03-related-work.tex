@@ -2,4 +2,35 @@
 %! Date = 15-10-2024
 
 \section{Related Work}\label{sec:related-work}
-This is the Related Work section.
+The usage of~\glspl{zkp} in Ethereum is not a new concept.
+In fact, it currently uses them both on- and off-chain.
+The following provides a short overview of some of the already existing solutions as well as one still being in development.
+\subsection{MACI}\label{subsec:MACI}
+In defense of a potential bribery attack, see~\autoref{sec:background}, the Ethereum blockchain implements a private voting system called~\gls{maci}~\cite{EthereumAttacks2024,MACI2022}.
+
+What ~\gls{maci} does is essentially hiding what each person has voted for.
+It does so by demanding the voters to send their votes encrypted to a central coordinator.
+This coordinator constructs~\gls{zk-snark} proofs, which verifies that all messages were processed correctly, and that the final result corresponds to the sum of all valid votes.
+
+As votes are now hidden, the adversary is not able, by oneself, to prove that the bribee voted in way of said bribery.
+Though the bribee could decrypt their own message and show the vote to the adversary.
+
+~\gls{maci} has fixed this problem by implementing public key switching.
+This means that a voter can request a new public key.
+In addition to this, a vote is only valid if it uses the most recent public key of the voter.
+Therefore, a bribee can show its first vote obeying the adversary, generate a new public key, and send a new, now honest, vote.
+The old vote will then become invalid as it uses a deprecated public key.
+
+\subsection{Off-chain roll-ups}\label{subsec:off-chain-roll-ups}
+As a result of Ethereum's popularity, the network could easily get congested if developers were not actively trying to distribute computations~\cite{EthereumScaling2024}.
+
+One of the first ideas was to introduce an on-chain technique called sharding.
+It is a technique where the database would be split into different parts between subsets of validators.
+Sharding was never deployed on the blockchain though, and instead Ethereum uses off-chain solutions to off-load computations.
+The idea of off-chain solutions, called L2-roll-ups, is that users commit their work to off-chain nodes.
+These perform the computations, thereafter they submit the work to the Ethereum Mainnet chain.
+
+One of these solutions is called a~\gls{zk-rollup}.
+\todo{Write about scalability, zk-evm, and Linea}
+\subsection{Whisk}\label{subsec:whisk}
+
