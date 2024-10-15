@@ -1,5 +1,25 @@
-%! Author = Anders
-%! Date = 15-10-2024
 
 \section{Background}\label{sec:background}
-This is the background section.
+In this section we will go through some of the concepts that will be used in the rest of the paper as well as some surrounding context like attacks performed.
+
+\subsection{Ethereum and Proof of Stake}\label{subsec:ethereum-and-proof-of-stake}
+Ethereum is a blockchain platform that allows developers to create decentralized applications using smart contracts.
+Previously opperating with a \gls{pow} consensus algorithm, Ethereum transitioned to a \gls{pos} consensus algorithm in 2022.
+This transition was done to reduce the energy consumption of the network and to increase the scalability of the network.
+The transition was done in a series of upgrades called the Ethereum 2.0 upgrade.
+\gls{pos} works by selecting validators to create new blocks based on the amount of cryptocurrency they have staked.
+
+\subsection{Zero-Knowledge Proofs}\label{subsec:zero-knowledge-proofs}
+A \gls{zpk} is a cryptographic method that allows one party to prove to another party that something is ture without revealing any information.
+
+Two of the subcategories of \gls{zpk}s are \gls{zk-snark} and \gls{zk-stark}.
+\gls{zk-snark} is the more common and of the two.
+It uses elliptic curve cryptography to create proofs based on the assumption that it is hard to find the discrete logarithm form the publicly known base point.
+\gls{zk-snark} has a start-up ritual which requires a trusted setup by all parties involved that the original proving key is destroyed as to not be able to create fake proofs.
+A criticism of \gls{zk-snark} is that it is not quantum resistant because of the reliance on elliptic curve cryptography.
+
+\gls{zk-stark} on the other hand is a newer and more complex \gls{zpk}.
+Despite not having non-interactive in its name, \gls{zk-stark} is also non-interactive.
+Different form \gls{zk-snark}, \gls{zk-stark} uses hashing functions to create proofs instead of elliptic curves.
+This method is post-quantum secure and does not require a trusted setup.
+It does however come with a higher computational cost and is not as widely used and dokumented as \gls{zk-snark}.
