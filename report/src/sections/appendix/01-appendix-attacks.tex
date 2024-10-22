@@ -95,6 +95,17 @@ Their ETH gets burned until the majority vote has a 2/3 majority.
 This makes the attack impractical for the attacker, as it is costly to have $\geq33\%$ of the total staked ETH and their ETH gets burned as well.
 
 \subsection{Avalanche Attack}\label{subsec:avalanche-attack}
+This type only includes a single attack that we call \textit{avalanche attack on proof-of-stake ghost}~\cite{10.1145/3560829.3563560}~\footnote{
+\href{https://github.com/tse-group/pos-ghost-attack?tab=readme-ov-file}{GitHub - tse-group/pos-ghost-attack}}.
+The attack uses withheld blocks to make wide subtrees to displace an honest chain.
+It does this by exploiting the reuse of uncle blocks.
+
+The mitigation for this attack is already a part of the Ethereum blockchain~\footnote{\href{https://github.com/ethereum/consensus-specs/pull/2730}{Proposer LMD Score Boosting by adiasg Pull Request \#2730 ethereum/consensus-specs GitHub}}.
+It is mitigated by~\gls{lmd}, which works together with~\gls{ghost}.
+The protocol only counts a vote from a validator if the vote is strictly later than the current entry.
+If two equivocating votes were sent from the same validator at the same time slot, only the earlier message would be counted.
+
+
 
 \subsection{Bribery}\label{subsec:bribery}
 
