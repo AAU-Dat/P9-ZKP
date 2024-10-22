@@ -1,16 +1,184 @@
 %! Author = ander
 %! Date = 18-10-2024
 \section{Attacks on Ethereum}\label{sec:attacks-on-ethereum}
+In the following section is an explanation of different attacks
+that either can or could happen to the ethereum blockchain.
+There is a description of both the attack and its possible mitigation.
+If found, there will be a link to a~\gls{poc} of the attack and/or the proposed/implemented mitigation.
 \subsection{Reorg}\label{subsec:reorg}
 
 \subsection{DoS}\label{subsec:dos}
+We've found three different kinds of DoS attacks that either were or are possible to perform on Ethereum.
+
+One of the attacks is called \textit{under-priced opcodes}~\cite{10.1145/3391195,9815256}.
+This attack works because Ethereum has a gas mechanism to reduce abuse of computing resources.
+Though when a contract has a lot of underpriced opcodes, they will consume many resources.
+Execution of contracts requires a lot of resources.
+
+To mitigate this,
+Ethereum has raised the gas cost of opcodes
+to preserve the number of transactions-per-second~\cite{Opcode-mitigation}~\footnote{
+\href{https://github.com/ethereum/EIPs/blob/master/EIPS/eip-150.md}{EIPs/EIPS/eip-150.md at master ethereum/EIPs GitHub}}.
+
+Another attack,
+which is closely related to the former, is \textit{empty account in the state trie}~\cite{10.1145/3391195,9815256}.
+This attack was possible
+because the existence of empty accounts increases the transaction processing time and synchronization.
+An empty account is an account with zero balance and no code.
+The attack required the proposer to select only the transactions of the adversary,
+which could be insured by offering a higher gas price.
+
+The mitigation is a combination of the one
+explained for \textit{under-priced opcodes} as well as a mitigation
+for clearing empty accounts~\cite{Opcode-mitigation,empty-account-mitigation,empty-account-eip-mitigation}~\footnote{
+\href{https://github.com/ethereum/EIPs/blob/master/EIPS/eip-161.md}{EIPs/EIPS/eip-161.md at master ethereum/EIPs GitHub}}.
+
+The last example of a DoS attack is called \textit{Proposer DoS}~\cite{EthereumSSLE2024,EthereumAttackDefense2024}.
+The background to making this attack possible is
+that the consensus mechanism uses a publicly known function for choosing the upcoming block proposers.
+The adversary is therefore able to compute this in slight advance of the blockchain, s.t.\ each proposer is now known.
+After this, the adversary can map the proposer's IP addresses and overload their connection.
+A successful attack would leave a proposer unable to propose their block in time.
+
+To prevent this kind of attack,
+Ethereum plans
+to use something they call~\gls{ssle} which ensures
+that only the selected validator knows that they have been selected~\cite{EthereumSSLE2024,EthereumResearchSSLE2024}.
+
+Specifically, a proposal has been made to use an election protocol called Whisk, which is a type of~\gls{ssle}~\cite{Whisk2024}\footnote{\href{https://github.com/ethresearch/Shuffle_SSLE/tree/master/rust_code/src}{Shuffle\_SSLE/rust\_code/src at master ethresearch/Shuffle\_SSLE GitHub}}\footnote{\href{https://github.com/ethereum/consensus-specs/pull/2800}{[WIP] Introduce consensus code for Whisk (SSLE) by asn-d6 Pull Request \#2800 ethereum/consensus-specs GitHub}}\footnote{\href{https://github.com/dapplion/lighthouse/tree/whisk}{GitHub - dapplion/lighthouse at whisk}}.
+It works by each validator submitting a commitment to a secret shared by all validators.
+The commitments are shuffled s.t.\ no-one can map commitments to the validators,
+but each validator knows what commitment belongs to them.
+This shuffle-phase goes on for a day, 256 epochs, before using the shuffled proposer list the following day.
+Commitments are chosen at random, and the selected proposer will detect its commitment to know when to propose a block.
+
+The shuffling phase requires validators to occasionally shuffle a subset of candidate proposers.
+Using a subset is a measure to reduce computation for the validators, as 256 epochs correspond to 8912 proposers.
+The shuffle requires a validator to construct a~\gls{zkp} to confirm that the shuffle was performed correctly.
 
 \subsection{Balancing Attack}\label{subsec:balancing-attack}
+For this type, we found two attacks.
+
+The first attack we call \textit{LMD-specific balancing attack}~\cite{10.1145/3560829.3563560}.
+This attack exploits the~\gls{lmd} \textit{proposer
+boosting} by sending out two competing blocks
+but giving half the validators one block before the other and the opposite for the other half.
+This would create a fork in the blockchain.
+
+Although no mitigation is mentioned,
+it requires $W_p/b+1$ adversarial slots~\footnote{where $W_p$ is the proposer boost weight (fx 100 validators/slot: $W_p=0.7\cdot100=70$)
+    and $b$ is the fraction of adversaries in the committee in each slot}.
+
+
+Another balancing attack has the adversary
+exploiting adversarial network delay
+and strategic voting by a vanishing fraction of adversarial validators
+to stall the protocol indefinitely~\cite{10.1007/978-3-031-18283-9_28}~\footnote{
+\href{https://github.com/tse-group/gasper-gossip-attack}{GitHub - tse-group/gasper-gossip-attack}}.
+
+Though this attack does depend on networking assumptions that are highly contrived in practice;
+those being the attacker having fine-grained control over latencies of individual validators.
 
 \subsection{Finality Attack (Bouncing Attack)}\label{subsec:finality-attack-(bouncing-attack)}
+For the Ethereum, there exist attacks called finality attacks, also known as bouncing attacks,
+which have the purpose of denying the blockchain to finalize its block, halting its functionality.
+
+The first attack is a \textit{double finality} attack~\cite{EthereumAttackDefense2024, 10646904}.
+It is theoretically possible for an attacker that wants to risk 34\% of the total staked ether.
+Two forks finalize simultaneously, creating a permanent split of the chain.
+
+A way to see a mitigation of this is
+that it is practically impossible given the current value of 34\% of the total staked ether.
+Also, voting on two different chains, called double voting, is a slash-able offense in the Ethereum chain,
+so the adversary would get their staked ETH slashed.
+
+
+Another finality attack is called \textit{33\% finality attack}~\cite{EthereumAttackDefense2024}.
+Here, all adversarial ($\geq33\%$) validators can simply go inactive,
+meaning that a block cannot get $2/3$ attestations which is required to achieve finality.
+Therefore, the blockchain would not be able to go further, as it would not be able to achieve finality.
+
+The mitigation for this is called \textit{the inactivity leak}.
+The Ethereum chain penalizes the validators who resist voting or are inactive.
+Their ETH gets burned until the majority vote has a 2/3 majority.
+This makes the attack impractical for the attacker,
+as it is costly to have $\geq33\%$ of the total staked ETH and their ETH gets burned as well.
 
 \subsection{Avalanche Attack}\label{subsec:avalanche-attack}
+This type only includes a single attack that we call \textit{avalanche attack on proof-of-stake ghost}~\cite{10.1145/3560829.3563560}~\footnote{
+\href{https://github.com/tse-group/pos-ghost-attack?tab=readme-ov-file}{GitHub - tse-group/pos-ghost-attack}}.
+The attack uses withheld blocks to make wide subtrees to displace an honest chain.
+It does this by exploiting the reuse of uncle blocks.
+
+The mitigation for this attack is already a part of the Ethereum blockchain~\footnote{\href{https://github.com/ethereum/consensus-specs/pull/2730}{Proposer LMD Score
+Boosting by adiasg Pull Request \#2730 ethereum/consensus-specs GitHub}}.
+It is mitigated by~\gls{lmd}, which works together with~\gls{ghost}.
+The protocol only counts a vote from a validator if the vote is strictly later than the current entry.
+If two equivocating votes were sent from the same validator at the same time slot,
+only the earlier message would be counted.
 
 \subsection{Bribery}\label{subsec:bribery}
+An adversary using bribery attacks on the Ethereum chain could be interested
+in dictating a choice in some sort of voting mechanism.
+This is exactly what happens in a described \textit{quadratic funding} attack~\cite{EthereumAttacks2024}.
+The adversary researches votes on the chain and bribes users to vote for what the adversary wants.
+
+In defense of a potential bribery attack,
+the Ethereum blockchain implements a private voting system called~\gls{maci}~\cite{EthereumAttacks2024,MACI2022}~\footnote{
+\href{https://github.com/privacy-scaling-explorations/maci}{GitHub -
+privacy-scaling-explorations/maci: Minimal Anti-Collusion Infrastructure (MACI)}}.
+
+What ~\gls{maci} does is essentially hiding what each person has voted for.
+It does so by demanding the voters to send their votes encrypted to a central coordinator.
+This coordinator constructs~\gls{zk-snark} proofs, which verifies that all messages were processed correctly,
+and that the final result corresponds to the sum of all valid votes.
+
+As votes are now hidden, the adversary is not able, by oneself, to prove that the bribee voted in way of said bribery.
+Though the bribee could decrypt their own message and show the vote to the adversary.
+
+~\gls{maci} has fixed this problem by implementing public key switching.
+This means that a voter can request a new public key.
+In addition to this, a vote is only valid if it uses the most recent public key of the voter.
+Therefore, a bribee can show its first vote obeying the adversary,
+generate a new public key, and send a new, now honest, vote.
+The old vote will then become invalid as it uses a deprecated public key.
 
 \subsection{Staircase Attack}\label{subsec:staircase-attack}
+The last type of attack that we cover is called a \textit{staircase attack}.
+This is a two-part attack, with a warm-up attack and a full attack~\cite{cryptoeprint:2023/1622}~\footnote{
+\href{https://github.com/tsinghua-cel/Staircase-Attack}{GitHub - tsinghua-cel/Staircase-Attack: This is the staircase attack implement for the paper "Max Attestation Matters: Making Honest Parties Lose Their Incentives in Ethereum PoS."}}.
+
+First, we will cover the \textit{warm-up attack}.
+The attack works when the adversary, called $a$, has to propose the first block of an epoch.
+From there, the attack works in four parts:
+\begin{enumerate}
+    \item The adversary withholds its block at slot $t$
+    \item The honest attestors in slot $t$ create attestation with the last block of the previous epoch, called $b$.
+    \item Adversary $a$ releases block $b_t$ and honest validators update their checkpoint to block $b_t$.
+    \item Attestations with targets different from $b_t$ will be discarded,
+    and honest attestors in slot $t$ will be penalized eventually
+\end{enumerate}
+
+This attack is mitigated by what Ethereum calls \textit{honest reorg},
+which should prevent intentionally withheld blocks~\cite{cryptoeprint:2023/1622}.
+
+A block proposed in slot t with fewer than 20\% attestations is considered invalid.
+Though it can be theoretically avoided with network timing, ensuring at least 20\% of the attestors get the block.
+
+
+With the \textit{warm-up attack}, the author goes on to describe a full \textit{staircase attack}.
+The attack starts with the \textit{warm-up attack}.
+Then the plan is to manipulate the source of the honest validators.
+Half the validators should get an outdated \textit{last justified checkpoint} and be penalized.
+All byzantine validators withhold their blocks and publish them in the middle of the epoch.
+It should be able
+to be done as a one-time attack with probability 98.84\%
+if adversary controls N/3 validators~\cite{cryptoeprint:2023/1622}.
+The byzantine validators don't get penalized, but will get a smaller reward than the fair share.
+
+What would make this attack infeasible is that it would require a lot of controlled validators.
+The author states that for Ethereum to be vulnerable, there would need to be $<16384$ validators,
+which makes the attack as good as impossible given Ethereum has $~1.073.406$ daily active validators~\cite{cryptoeprint:2023/1622}~\footnote{According to \href{https://beaconcha.in/charts/validators}{beaconcha.in} as of 22-10-2024}.
+Also,
+Ethereum released a patch
+fixing this attack after the author pointed it out~\footnote{\href{https://github.com/ethereum/consensus-specs/pull/3339\#issuecomment-1637117341}{Confirmation Rule by saltiniroberto Pull Request \#3339 ethereum/consensus-specs GitHub}}.
