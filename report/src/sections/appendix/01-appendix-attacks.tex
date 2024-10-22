@@ -52,9 +52,27 @@ The shuffling phase requires validators to occasionally shuffle a subset of cand
 Using a subset is a measure to reduce computation for the validators, as 256 epochs correspond to 8912 proposers.
 The shuffle requires a validator to construct a~\gls{zkp} to confirm that the shuffle was performed correctly.
 
-
-
 \subsection{Balancing Attack}\label{subsec:balancing-attack}
+For this type, we found two attacks.
+
+The first attack we call \textit{LMD-specific balancing attack}~\cite{10.1145/3560829.3563560}.
+This attack exploits the~\gls{lmd} \textit{proposer
+boosting} by sending out two competing blocks
+but giving half the validators one block before the other and the opposite for the other half.
+This would create a fork in the blockchain.
+
+Although no mitigation is mentioned,
+it requires $W_p/b+1$ adversarial slots~\footnote{where $W_p$ is the proposer boost weight (fx 100 validators/slot: $W_p=0.7\cdot100=70$)
+    and $b$ is the fraction of adversaries in the committee in each slot}.
+
+
+Another balancing attack has the adversary
+exploiting adversarial network delay
+and strategic voting by a vanishing fraction of adversarial validators
+to stall the protocol indefinitely~\cite{10.1007/978-3-031-18283-9_28}~\footnote{
+\href{https://github.com/tse-group/gasper-gossip-attack}{GitHub - tse-group/gasper-gossip-attack}}.
+
+Though this attack does depend on networking assumptions that are highly contrived in practice; those being the attacker having fine-grained control over latencies of individual validators.
 
 \subsection{Finality Attack (Bouncing Attack)}\label{subsec:finality-attack-(bouncing-attack)}
 
