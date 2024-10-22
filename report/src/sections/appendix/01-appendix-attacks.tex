@@ -75,6 +75,24 @@ to stall the protocol indefinitely~\cite{10.1007/978-3-031-18283-9_28}~\footnote
 Though this attack does depend on networking assumptions that are highly contrived in practice; those being the attacker having fine-grained control over latencies of individual validators.
 
 \subsection{Finality Attack (Bouncing Attack)}\label{subsec:finality-attack-(bouncing-attack)}
+For the Ethereum, there exists attacks called finality attacks, also known as bouncing attacks, which have the purpose of denying the blockchain to finalize its block, halting its functionality.
+
+The first attack is a \textit{double finality} attack~\cite{EthereumAttackDefense2024, 10646904}.
+It is theoretically possible for an attacker that wants to risk 34\% of the total staked ether.
+Two forks finalize simultaneously, creating a permanent split of the chain.
+
+A way to see a mitigation of this is that it is practically impossible given the current value of 34\% of the total staked ether.
+Also, voting on two different chains, called double voting, is a slashable offense in the Ethereum chain, so the adversary would get their staked ETH slashed.
+
+
+Another finality attack is called \textit{33\% finality attack}~\cite{EthereumAttackDefense2024}.
+Here, all adversarial ($\geq33\%$) validators can simply go inactive, meaning that a block cannot get $2/3$ attestations which is required to achieve finality.
+Therefore, the blockchain would not be able to go further, as it would not be able to achieve finality.
+
+The mitigation for this is called \textit{the inactivity leak}.
+The Ethereum chain penalizes the validators who resist voting or are inactive.
+Their ETH gets burned until the majority vote has a 2/3 majority.
+This makes the attack impractical for the attacker, as it is costly to have $\geq33\%$ of the total staked ETH and their ETH gets burned as well.
 
 \subsection{Avalanche Attack}\label{subsec:avalanche-attack}
 
