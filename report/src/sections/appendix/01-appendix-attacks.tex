@@ -105,8 +105,26 @@ It is mitigated by~\gls{lmd}, which works together with~\gls{ghost}.
 The protocol only counts a vote from a validator if the vote is strictly later than the current entry.
 If two equivocating votes were sent from the same validator at the same time slot, only the earlier message would be counted.
 
-
-
 \subsection{Bribery}\label{subsec:bribery}
+An adversary using bribery attacks on the Ethereum chain could be interested in dictating a choice in some sort of voting mechanism.
+This is exactly what happens in a described \textit{quadratic funding} attack~\cite{EthereumAttacks2024}.
+The adversary researches votes on the chain and bribes users to vote for what the adversary wants.
+
+In defense of a potential bribery attack, the Ethereum blockchain implements a private voting system called~\gls{maci}~\cite{EthereumAttacks2024,MACI2022}~\footnote{
+\href{https://github.com/privacy-scaling-explorations/maci}{GitHub - privacy-scaling-explorations/maci: Minimal Anti-Collusion Infrastructure (MACI)}}.
+
+What ~\gls{maci} does is essentially hiding what each person has voted for.
+It does so by demanding the voters to send their votes encrypted to a central coordinator.
+This coordinator constructs~\gls{zk-snark} proofs, which verifies that all messages were processed correctly, and that the final result corresponds to the sum of all valid votes.
+
+As votes are now hidden, the adversary is not able, by oneself, to prove that the bribee voted in way of said bribery.
+Though the bribee could decrypt their own message and show the vote to the adversary.
+
+~\gls{maci} has fixed this problem by implementing public key switching.
+This means that a voter can request a new public key.
+In addition to this, a vote is only valid if it uses the most recent public key of the voter.
+Therefore, a bribee can show its first vote obeying the adversary, generate a new public key, and send a new, now honest, vote.
+The old vote will then become invalid as it uses a deprecated public key.
+
 
 \subsection{Staircase Attack}\label{subsec:staircase-attack}
