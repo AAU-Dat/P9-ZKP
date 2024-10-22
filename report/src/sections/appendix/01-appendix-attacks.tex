@@ -127,3 +127,34 @@ Therefore, a bribee can show its first vote obeying the adversary, generate a ne
 The old vote will then become invalid as it uses a deprecated public key.
 
 \subsection{Staircase Attack}\label{subsec:staircase-attack}
+The last type of attack that we cover is called a \textit{staircase attack}.
+This is a two-part attack, with a warm-up attack and a full attack~\cite{cryptoeprint:2023/1622}~\footnote{
+\href{https://github.com/tsinghua-cel/Staircase-Attack}{GitHub - tsinghua-cel/Staircase-Attack: This is the staircase attack implement for the paper "Max Attestation Matters: Making Honest Parties Lose Their Incentives in Ethereum PoS."}}.
+
+First, we will cover the \textit{warm-up attack}.
+The attack works when the adversary, called $a$, has to propose the first block of an epoch.
+From there, the attack works in four parts:
+\begin{enumerate}
+    \item The adversary withholds its block at slot $t$
+    \item The honest attestors in slot $t$ create attestation with the last block of the previous epoch, called $b$.
+    \item Adversary $a$ releases block $b_t$ and honest validators update their checkpoint to block $b_t$.
+    \item Attestations with targets different from $b_t$ will be discarded, and honest attestors in slot $t$ will be penalized eventually
+\end{enumerate}
+
+This attack is mitigated by what Ethereum calls \textit{honest reorg}, which should prevent intentionally withheld blocks~\cite{cryptoeprint:2023/1622}.
+
+A block proposed in slot t with fewer than 20\% attestations is considered invalid.
+Though it can be theoretically avoided with network timing, ensuring at least 20\% of the attestors get the block.
+
+
+With the \textit{warm-up attack}, the author goes on to describe a full \textit{staircase attack}.
+The attack starts with the \textit{warm-up attack}.
+Then the plan is to manipulate the source of the honest validators.
+Half the validators should get an outdated last justified checkpoint and be penalized.
+All byzantine validators withhold their blocks and publish them in the middle of the epoch.
+It should be able to be done as a one-time attack with probability 98.84\% if adversary controls N/3 validators.
+The byzantine validators don't get penalized, but will get a smaller reward than the fair share.
+
+What would make this attack infeasible is that it would require a lot of controlled validators.
+The author states that for Ethereum to be vulnerable, there would need to be $<16384$ validators, which makes the attack as good as impossible given Ethereum has $~1.073.406$ daily active validators~\footnote{According to \href{https://beaconcha.in/charts/validators}{beaconcha.in} as of 22-10-2024}.
+Also, Ethereum released a patch fixing this attack after the author pointed it out~\footnote{\href{https://github.com/ethereum/consensus-specs/pull/3339\#issuecomment-1637117341}{Confirmation Rule by saltiniroberto Pull Request \#3339 ethereum/consensus-specs GitHub}}.
