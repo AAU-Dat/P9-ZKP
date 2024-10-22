@@ -4,6 +4,38 @@
 \subsection{Reorg}\label{subsec:reorg}
 
 \subsection{DoS}\label{subsec:dos}
+We've found three different kinds of DoS attacks that either were or are possible to perform on Ethereum.
+
+One of the attacks is called \textit{under-priced opcodes}~\cite{10.1145/3391195,9815256}.
+This attack works because Ethereum has a gas mechanism to reduce abuse of computing resources.
+Though when a contract has a lot of underpriced opcodes, they will consume many resources.
+Execution of contracts requires a lot of resources.
+
+To mitigate this,
+Ethereum has raised the gas cost of opcodes
+to preserve the number of transactions-per-second~\cite{Opcode-mitigation}~\footnote{
+\href{https://github.com/ethereum/EIPs/blob/master/EIPS/eip-150.md}{EIPs/EIPS/eip-150.md at master · ethereum/EIPs · GitHub}}.
+
+
+Another attack,
+which is closely related to the former, is \textit{empty account in the state trie}~\cite{10.1145/3391195,9815256}.
+This attack was possible
+because the existence of empty accounts increases the transaction processing time and synchronization.
+An empty account is an account with zero balance and no code.
+The attack required the proposer to select only the transactions of the adversary,
+which could be insured by offering a higher gas price.
+
+The mitigation is a combination of the one
+explained for \textit{under-priced opcodes} as well as a mitigation
+for clearing empty accounts~\cite{Opcode-mitigation,empty-account-mitigation,empty-account-eip-mitigation}~\footnote{
+\href{https://github.com/ethereum/EIPs/blob/master/EIPS/eip-161.md}{EIPs/EIPS/eip-161.md at master · ethereum/EIPs · GitHub}}.
+
+
+
+
+
+
+
 
 \subsection{Balancing Attack}\label{subsec:balancing-attack}
 
