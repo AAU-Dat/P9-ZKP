@@ -14,8 +14,7 @@ Execution of contracts requires a lot of resources.
 To mitigate this,
 Ethereum has raised the gas cost of opcodes
 to preserve the number of transactions-per-second~\cite{Opcode-mitigation}~\footnote{
-\href{https://github.com/ethereum/EIPs/blob/master/EIPS/eip-150.md}{EIPs/EIPS/eip-150.md at master · ethereum/EIPs · GitHub}}.
-
+\href{https://github.com/ethereum/EIPs/blob/master/EIPS/eip-150.md}{EIPs/EIPS/eip-150.md at master ethereum/EIPs GitHub}}.
 
 Another attack,
 which is closely related to the former, is \textit{empty account in the state trie}~\cite{10.1145/3391195,9815256}.
@@ -28,12 +27,30 @@ which could be insured by offering a higher gas price.
 The mitigation is a combination of the one
 explained for \textit{under-priced opcodes} as well as a mitigation
 for clearing empty accounts~\cite{Opcode-mitigation,empty-account-mitigation,empty-account-eip-mitigation}~\footnote{
-\href{https://github.com/ethereum/EIPs/blob/master/EIPS/eip-161.md}{EIPs/EIPS/eip-161.md at master · ethereum/EIPs · GitHub}}.
+\href{https://github.com/ethereum/EIPs/blob/master/EIPS/eip-161.md}{EIPs/EIPS/eip-161.md at master ethereum/EIPs GitHub}}.
 
+The last example of a DoS attack is called \textit{Proposer DoS}~\cite{EthereumSSLE2024,EthereumAttackDefense2024}.
+The background to making this attack possible is
+that the consensus mechanism uses a publicly known function for choosing the upcoming block proposers.
+The adversary is therefore able to compute this in slight advance of the blockchain, s.t.\ each proposer is now known.
+After this, the adversary can map the proposer's IP addresses and overload their connection.
+A successful attack would leave a proposer unable to propose their block in time.
 
+To prevent this kind of attack,
+Ethereum plans
+to use something they call~\gls{ssle} which ensures
+that only the selected validator knows that they have been selected~\cite{EthereumSSLE2024,EthereumResearchSSLE2024}.
 
+Specifically, a proposal has been made to use an election protocol called Whisk, which is a type of~\gls{ssle}~\cite{Whisk2024}\footnote{\href{https://github.com/ethresearch/Shuffle_SSLE/tree/master/rust_code/src}{Shuffle\_SSLE/rust\_code/src at master ethresearch/Shuffle\_SSLE GitHub}}\footnote{\href{https://github.com/ethereum/consensus-specs/pull/2800}{[WIP] Introduce consensus code for Whisk (SSLE) by asn-d6 Pull Request \#2800 ethereum/consensus-specs GitHub}}\footnote{\href{https://github.com/dapplion/lighthouse/tree/whisk}{GitHub - dapplion/lighthouse at whisk}}.
+It works by each validator submitting a commitment to a secret shared by all validators.
+The commitments are shuffled s.t.\ no-one can map commitments to the validators,
+but each validator knows what commitment belongs to them.
+This shuffle-phase goes on for a day, 256 epochs, before using the shuffled proposer list the following day.
+Commitments are chosen at random, and the selected proposer will detect its commitment to know when to propose a block.
 
-
+The shuffling phase requires validators to occasionally shuffle a subset of candidate proposers.
+Using a subset is a measure to reduce computation for the validators, as 256 epochs correspond to 8912 proposers.
+The shuffle requires a validator to construct a~\gls{zkp} to confirm that the shuffle was performed correctly.
 
 
 
