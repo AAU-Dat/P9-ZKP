@@ -5,7 +5,13 @@ One of the reorganization attacks is \textit{Commitment Attacks on LMD GHOST}~\c
 It works by using financial incentives to convince validators to vote for a prior block in the chain, by saying it is the block you will be commiting to, to try and exploit there laziness.
 Possible because around 90\% of validators use software called "MEV Boost", which tries to earn you the most money.
 
-Another reorg attack is Short-range reorg
+Another reorg attack is Short-range reorg which uses short-range reorgs of the blockchain stipulating consensus to delay finality of consensus decisions.
+Such short-range reorgs also allow validators to increase their earnings from participating in the protocol.
+It does this by withholding a block and then releases it timed with the next honest block in order to orphan it.
+This attack requires large amount of stake to be hold by the adversary with 30\% being the aim and everything below only reducing the chance of succes.
+
+
+
 
 
 \subsection{DoS}\label{subsec:dos}
