@@ -53,3 +53,153 @@
     url={https://arxiv.org/abs/2407.19479},
 }
 
+
+
+@article{10.1145/3391195,
+    author = {Chen, Huashan and Pendleton, Marcus and Njilla, Laurent and Xu, Shouhuai},
+    title = {A Survey on Ethereum Systems Security: Vulnerabilities, Attacks, and Defenses},
+    year = {2020},
+    issue_date = {May 2021},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    volume = {53},
+    number = {3},
+    issn = {0360-0300},
+    url = {https://doi.org/10.1145/3391195},
+    doi = {10.1145/3391195},
+    abstract = {Blockchain technology is believed by many to be a game changer in many application domains. While the first generation of blockchain technology (i.e., Blockchain 1.0) is almost exclusively used for cryptocurrency, the second generation (i.e., Blockchain 2.0), as represented by Ethereum, is an open and decentralized platform enabling a new paradigm of computing—Decentralized Applications (DApps) running on top of blockchains. The rich applications and semantics of DApps inevitably introduce many security vulnerabilities, which have no counterparts in pure cryptocurrency systems like Bitcoin. Since Ethereum is a new, yet complex, system, it is imperative to have a systematic and comprehensive understanding on its security from a holistic perspective, which was previously unavailable in the literature. To the best of our knowledge, the present survey, which can also be used as a tutorial, fills this void. We systematize three aspects of Ethereum systems security: vulnerabilities, attacks, and defenses. We draw insights into vulnerability root causes, attack consequences, and defense capabilities, which shed light on future research directions.},
+    journal = {ACM Comput. Surv.},
+    month = jun,
+    articleno = {67},
+    numpages = {43},
+    keywords = {smart contract, security, Ethereum, Blockchain}
+}
+
+@ARTICLE{9815256,
+    author={Kabla, Arkan Hammoodi Hasan and Anbar, Mohammed and Manickam, Selvakumar and Al-Amiedy, Taief Alaa and Cruspe, Peterson Bernabe and Al-Ani, Ahmed K. and Karuppayah, Shankar},
+    journal={IEEE Access},
+    title={Applicability of Intrusion Detection System on Ethereum Attacks: A Comprehensive Review},
+    year={2022},
+    volume={10},
+    number={},
+    pages={71632-71655},
+    keywords={Blockchains;Decentralized applications;Peer-to-peer computing;Smart contracts;Intrusion detection;Bitcoin;Data structures;Anomaly detection;blockchain;cryptocurrency;Ethereum attacks;Ethereum vulnerabilities;intrusion detection system;Kademlia;P2P network;smart contracts;transaction},
+    doi={10.1109/ACCESS.2022.3188637}}
+
+@article{Opcode-mitigation,
+    title        = {EIP-150: Gas cost changes for IO-heavy operations},
+    author       = {Vitalik Buterin},
+    journal      = {Ethereum Improvement Proposals},
+    year         = {September 2016},
+    number       = {150},
+    note         = {Accessed: 18-10-2024},
+    url = {https://eips.ethereum.org/EIPS/eip-150}
+}
+
+@article{empty-account-mitigation,
+    title        = {A state clearing FAQ},
+    author       = {Vitalik Buterin},
+    year         = {November 2016},
+    note         = {Accessed: 18-10-2024},
+    url = {https://www.reddit.com/r/ethereum/comments/5es5g4/a_state_clearing_faq}
+}
+
+@article{empty-account-eip-mitigation,
+    title        = {EIP-161: State trie clearing (invariant-preserving alternative)},
+    author       = {Gavin Wood},
+    journal      = {Ethereum Improvement Proposals},
+    year         = {October 2016},
+    number       = {161},
+    note         = {Accessed: 18-10-2024},
+    url = {https://eips.ethereum.org/EIPS/eip-161}
+}
+
+@article{EthereumSSLE2024,
+    title        = {Secret leader election},
+    author       = {ethereum.org},
+    year         = {2024},
+    note         = {Accessed: 22-10-2024},
+    url = {https://ethereum.org/en/roadmap/secret-leader-election/}
+}
+
+@article{EthereumAttackDefense2024,
+    title        = {Ethereum proof-of-stake attack and defense},
+    author       = {ethereum.org},
+    year         = {2024},
+    note         = {Accessed: 22-10-2024},
+    url = {https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/attack-and-defense/}
+}
+
+
+@article{EthereumResearchSSLE2024,
+    title        = {Secret non-single leader election},
+    author       = {Vitalik Buterin},
+    year         = {2024},
+    note         = {Accessed: 22-10-2024},
+    url = {https://ethresear.ch/t/secret-non-single-leader-election/11789}
+}
+
+
+@article{Whisk2024,
+    title        = {Whisk: A practical shuffle-based SSLE protocol for Ethereum},
+    author       = {George Kadianakis},
+    year         = {2024},
+    note         = {Accessed: 22-10-2024},
+    url = {https://ethresear.ch/t/whisk-a-practical-shuffle-based-ssle-protocol-for-ethereum/11763}
+}
+
+@inproceedings{10.1145/3560829.3563560,
+    author = {Neu, Joachim and Tas, Ertem Nusret and Tse, David},
+    title = {Two More Attacks on Proof-of-Stake GHOST/Ethereum},
+    year = {2022},
+    isbn = {9781450398794},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    url = {https://doi.org/10.1145/3560829.3563560},
+    doi = {10.1145/3560829.3563560},
+    abstract = {Ethereum, the world's second largest cryptocurrency with a market capitalization exceeding 120 billion USD as of this writing, aims to switch from Proof-of-Work (PoW) to Proof-of-Stake (PoS) based consensus later in the year 2022 (`the Merge'). Yet, so far, the proposed PoS consensus protocol lacks in rigorous security analysis. We present two new attack strategies targeting the PoS Ethereum consensus protocol. The first attack suggests a fundamental conceptual incompatibility between PoS and the Greedy Heaviest-Observed Sub-Tree (GHOST) fork choice paradigm employed by PoS Ethereum. In a nutshell, PoS allows an adversary with a vanishing amount of stake to produce an unlimited number of equivocating blocks. While most equivocating blocks will be orphaned, such orphaned 'uncle blocks' still influence fork choice under the GHOST paradigm, bestowing upon the adversary devastating control over the canonical chain. While the Latest Message Driven (LMD) aspect of current PoS Ethereum prevents a straightforward application of this attack, our second attack shows how LMD specifically can be exploited to obtain a new variant of the balancing attack that overcomes 'proposer boosting', a recent protocol addition that was intended to mitigate balancing-type attacks. Thus, in its current form, PoS Ethereum without and with LMD is vulnerable to our first and second attack, respectively.},
+    booktitle = {Proceedings of the 2022 ACM Workshop on Developments in Consensus},
+    pages = {43–52},
+    numpages = {10},
+    keywords = {proof-of-stake, ghost, ethereum, balancing, avalanche, attack},
+    location = {Los Angeles, CA, USA},
+    series = {ConsensusDay '22}
+}
+
+@InProceedings{10.1007/978-3-031-18283-9_28,
+    author="Schwarz-Schilling, Caspar
+and Neu, Joachim
+and Monnot, Barnab{\'e}
+and Asgaonkar, Aditya
+and Tas, Ertem Nusret
+and Tse, David",
+    editor="Eyal, Ittay
+and Garay, Juan",
+    title="Three Attacks on Proof-of-Stake Ethereum",
+    booktitle="Financial Cryptography and Data Security",
+    year="2022",
+    publisher="Springer International Publishing",
+    address="Cham",
+    pages="560--576",
+    abstract="Recently, two attacks were presented against Proof-of-Stake (PoS) Ethereum: one where short-range reorganizations of the underlying consensus chain are used to increase individual validators' profits and delay consensus decisions, and one where adversarial network delay is leveraged to stall consensus decisions indefinitely. We provide refined variants of these attacks, considerably relaxing the requirements on adversarial stake and network timing, and thus rendering the attacks more severe. Combining techniques from both refined attacks, we obtain a third attack which allows an adversary with vanishingly small fraction of stake and no control over network message propagation (assuming instead probabilistic message propagation) to cause even long-range consensus chain reorganizations. Honest-but-rational or ideologically motivated validators could use this attack to increase their profits or stall the protocol, threatening incentive alignment and security of PoS Ethereum. The attack can also lead to destabilization of consensus from congestion in vote processing.",
+    isbn="978-3-031-18283-9"
+}
+
+@INPROCEEDINGS{10646904,
+    author={Pavloff, Ulysse and Amoussou-Guenou, Yackolley and Tucci-Piergiovanni, Sara},
+    booktitle={2024 54th Annual IEEE/IFIP International Conference on Dependable Systems and Networks (DSN)},
+    title={Byzantine Attacks Exploiting Penalties in Ethereum PoS},
+    year={2024},
+    volume={},
+    number={},
+    pages={53-65},
+    keywords={Smart contracts;Probabilistic logic;Blockchains;Safety;Cryptocurrency;Open source software;Ethereum;Inactivity Leak;Safety;Liveness;Blockchain},
+    doi={10.1109/DSN58291.2024.00020}}
+
+@misc{cryptoeprint:2023/1622,
+    author = {Mingfei Zhang and Rujia Li and Sisi Duan},
+    title = {Max Attestation Matters: Making Honest Parties Lose Their Incentives in Ethereum {PoS}},
+    howpublished = {Cryptology {ePrint} Archive, Paper 2023/1622},
+    year = {2023},
+    url = {https://eprint.iacr.org/2023/1622}
+}
