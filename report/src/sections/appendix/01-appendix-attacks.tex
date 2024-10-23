@@ -1,11 +1,33 @@
-%! Author = ander
-%! Date = 18-10-2024
+
 \section{Attacks on Ethereum}\label{sec:attacks-on-ethereum}
 In the following section is an explanation of different attacks
 that either can or could happen to the ethereum blockchain.
 There is a description of both the attack and its possible mitigation.
 If found, there will be a link to a~\gls{poc} of the attack and/or the proposed/implemented mitigation.
 \subsection{Reorg}\label{subsec:reorg}
+One of the reorganization attacks is \textit{Commitment Attacks on LMD GHOST}~\cite{sarenche2024breakingbalancepowercommitment}.
+It works by using financial incentives to convince validators to vote for a prior block in the chain, by saying it is the block you will be commiting to, to try and exploit there laziness.
+Possible because around 90\% of validators use software called "MEV Boost", which tries to earn you the most money.
+
+Another reorg attack is Short-range reorg which uses short-range reorgs of the blockchain stipulating consensus to delay finality of consensus decisions~\cite{10.1007/978-3-031-18283-9_28}.
+Such short-range reorgs also allow validators to increase their earnings from participating in the protocol.
+It does this by withholding a block and then releases it timed with the next honest block in order to orphan it.
+This attack requires large amount of stake to be hold by the adversary with 30\% being the aim and everything below only reducing the chance of succes.
+
+A reorg attack that has been inspired bt the last attack is Low cost long-range reorg attack\cite{10.1007/978-3-031-18283-9_28}.
+This attack works by the adversary avoids competing directly with honest validators of $(k - 1)$ committees, as done in the short-range reorg attack.
+Instead, the adversary uses the technique of balancing attacks to keep honest committee members split roughly in half by ensuring they have different views on what the current head of the chain is.
+This makes honest nodes work against each other to maintain a tie which the adversary can tip to their liking at any point using only a few votes.
+A possible mitigation is the recently proposed Transaction Encapsulation approach demonstrates that some cross-layer attacks can be alleviated or prevented by dynamic transaction~.
+
+A different reorg attack is called $>=50\%$ stake attack~\cite{EthereumAttackDefense2024}.
+The attack works if the adversary has over 50\% stake, the adversary would be able to have the majority vote every time in the fork choice algorithm.
+This would mean that all honest validators need to vote along with the adversary to not get their ETH burned due to the inactivity leak security protocol.
+Because of said protocol, the adversary would also eventually gain finalization.
+This attack also makes it possible for the adversary to easily perform a reorg of a block.
+It is thought that given the large amount of stake needed for the attack to work, this attack would not be feasible.
+
+
 
 \subsection{DoS}\label{subsec:dos}
 We've found three different kinds of DoS attacks that either were or are possible to perform on Ethereum.
