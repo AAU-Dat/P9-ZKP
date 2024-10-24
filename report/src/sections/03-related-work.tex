@@ -1,5 +1,4 @@
-%! Author = Anders
-%! Date = 15-10-2024
+
 
 \section{Related Work}\label{sec:related-work}
 The usage of~\glspl{zkp} in Ethereum is not a new concept.
@@ -16,4 +15,10 @@ The idea of off-chain solutions, called L2-roll-ups, is that users commit their 
 These perform the computations, thereafter they submit the work to the Ethereum Mainnet chain.
 
 One of these solutions is called a~\gls{zk-rollup}.
+
+\subsection{dos attack}\label{subsec:dos-attack}
+Some of the instances of dos attacks that is seen on ethereum ranges from attacks on the proposers to attacks that seek to slow down the network itself.
+A known attack aims to slow down the network by using underpriced opcodes to create a block that is hard to process~\cite{10.1145/3391195,9815256}.
+Another way to slow down the network is to create empty accounts that are hard to process~\cite{empty-account-mitigation,empty-account-eip-mitigation}.
+This attack however is outdated and has been mitigated by making at near impossible to create empty accounts in the network.
 
