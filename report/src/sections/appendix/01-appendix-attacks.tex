@@ -9,12 +9,12 @@ One of the reorganization attacks is \textit{Commitment Attacks on LMD GHOST}~\c
 It works by using financial incentives to convince validators to vote for a prior block in the chain, by saying it is the block you will be commiting to, to try and exploit there laziness.
 Possible because around 90\% of validators use software called "MEV Boost", which tries to earn you the most money.
 
-Another reorg attack is Short-range reorg which uses short-range reorgs of the blockchain stipulating consensus to delay finality of consensus decisions~\cite{10.1007/978-3-031-18283-9_28}.
+Another reorg attack is Short-range reorg, which uses short-range reorgs of the blockchain stipulating consensus to delay the finality of consensus decisions~\cite{10.1007/978-3-031-18283-9_28}.
 Such short-range reorgs also allow validators to increase their earnings from participating in the protocol.
-It does this by withholding a block and then releases it timed with the next honest block in order to orphan it.
-This attack requires large amount of stake to be hold by the adversary with 30\% being the aim and everything below only reducing the chance of succes.
+It does this by withholding a block and then releases it timed with the next honest block to orphan it.
+This attack requires a large amount of stake to be held by the adversary, with 30\% being the aim and everything below only reducing the chance of success.
 
-A reorg attack that has been inspired bt the last attack is Low cost long-range reorg attack\cite{10.1007/978-3-031-18283-9_28}.
+A reorg attack that has been inspired by the last attack is Low cost long-range reorg attack\cite{10.1007/978-3-031-18283-9_28}.
 This attack works by the adversary avoids competing directly with honest validators of $(k - 1)$ committees, as done in the short-range reorg attack.
 Instead, the adversary uses the technique of balancing attacks to keep honest committee members split roughly in half by ensuring they have different views on what the current head of the chain is.
 This makes honest nodes work against each other to maintain a tie which the adversary can tip to their liking at any point using only a few votes.
@@ -30,7 +30,7 @@ It is thought that given the large amount of stake needed for the attack to work
 
 
 \subsection{DoS}\label{subsec:dos}
-We've found three different kinds of DoS attacks that either were or are possible to perform on Ethereum.
+We've found three different kinds of~\gls{dos} attacks that either were or are possible to perform on Ethereum.
 
 One of the attacks is called \textit{under-priced opcodes}~\cite{10.1145/3391195,9815256}.
 This attack works because Ethereum has a gas mechanism to reduce abuse of computing resources.
@@ -55,7 +55,7 @@ explained for \textit{under-priced opcodes} as well as a mitigation
 for clearing empty accounts~\cite{Opcode-mitigation,empty-account-mitigation,empty-account-eip-mitigation}~\footnote{
 \href{https://github.com/ethereum/EIPs/blob/master/EIPS/eip-161.md}{EIPs/EIPS/eip-161.md at master ethereum/EIPs GitHub}}.
 
-The last example of a DoS attack is called \textit{Proposer DoS}~\cite{EthereumSSLE2024,EthereumAttackDefense2024}.
+The last example of a~\gls{dos} attack is called \textit{Proposer DoS}~\cite{EthereumSSLE2024,EthereumAttackDefense2024}.
 The background to making this attack possible is
 that the consensus mechanism uses a publicly known function for choosing the upcoming block proposers.
 The adversary is therefore able to compute this in slight advance of the blockchain, s.t.\ each proposer is now known.
