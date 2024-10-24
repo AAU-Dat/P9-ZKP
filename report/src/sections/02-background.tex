@@ -8,12 +8,14 @@ Previously operating with a~\gls{pow} consensus algorithm, Ethereum transitioned
 This transition was done to reduce the energy consumption of the network and to increase the scalability of the network.
 The transition was done in a series of upgrades called the Ethereum 2.0 upgrade.
 ~\gls{pos} is a consensus algorithm that is used to secure blockchain net by helping to create new blocks and confirm transactions.
-It works by creating validators based on the amount of cryptocurrency they have staked then it selects som of these validators as proposers to be the ones to create new blocks which then are confirmed by the rest of the validators.
+It works by creating validators based on the amount of cryptocurrency they have staked.
+Then it selects some of these validators as proposers to be the ones to create new blocks, which then are confirmed by the rest of the validators.
 The proposers then get rewarded for creating a valid block and the validators get rewarded for confirming the block.
 Block proposing happens within epochs of 32 blocks per epochs and for each epoch a group of validators is selected and from them a proposer is chosen.
-the way the proposer is chosen is through a random proses that is weighted by the amount of cryptocurrency the validator has staked and using the publicly available \gls{randao} algorithm to simulate the random selection.
-The blocks also have a time limit of 12 seconds to be created and confirmed else the block is discarded and the proposer is penalized.
-If a fork happens the validators have to choose which fork to follow this is done by using the \gls{lmd-ghost} algorithm which chooses the fork with the greatest weight of attestations in its history~\cite{EthereumProof-of-stakePoS}.
+the way the proposer is chosen is through a random proses that is weighted by the amount of cryptocurrency the validator has staked, and by using the publicly available \gls{randao} algorithm to simulate the random selection.
+The blocks also have a time limit of 12 seconds to be created and confirmed else the block will be discarded and the proposer is penalized.
+If a fork happens the validators have to choose which fork to follow.
+This is done by using the \gls{lmd-ghost} algorithm which chooses the fork with the greatest weight of attestations in its history~\cite{EthereumProof-of-stakePoS}.
 
 
 \subsection{Zero-Knowledge Proofs}\label{subsec:zero-knowledge-proofs}
