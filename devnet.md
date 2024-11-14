@@ -1,4 +1,5 @@
 # Shortened guide to setting up Prysm DevNet (Ubuntu)
+This guide could be subject to change, as we may need to pack it all up in Docker containers
 ## First step
 - Install GoLang
 - Use a linux GNU screen on the `remote server` supposed to run the `devnet` 
