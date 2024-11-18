@@ -18,20 +18,20 @@ If a fork happens the validators have to choose which fork to follow.
 This is done by using the \gls{lmd-ghost} algorithm which chooses the fork with the greatest weight of attestations in its history~\cite{EthereumProof-of-stakePoS}.
 
 
-\subsection{Zero-Knowledge Proofs}\label{subsec:zero-knowledge-proofs}
-A~\gls{zkp} is a cryptographic method that allows one party to prove to another party that something is true without revealing any information.
-
-Two of the subcategories of \gls{zkp}s are \gls{zk-snark} and \gls{zk-stark}.
-~\gls{zk-snark} is the more common of the two.
-It uses elliptic curve cryptography to create proofs based on the assumption that it is hard to find the discrete logarithm form the publicly known base point.
-~\gls{zk-snark} has a start-up ritual which requires a trusted setup by all parties involved that the original proving key is destroyed as to not be able to create fake proofs.
-A criticism of \gls{zk-snark} is that it is not quantum resistant because of the reliance on elliptic curve cryptography.
-
-~\gls{zk-stark} on the other hand, is a newer and more complex~\gls{zkp}.
-Despite not having non-interactive in its name,~\gls{zk-stark} is also non-interactive.
-Different form~\gls{zk-snark},~\gls{zk-stark} uses hashing functions to create proofs instead of elliptic curves.
-This method is post-quantum secure and does not require a trusted setup.
-It does, however, come with a higher computational cost and is not as widely used and documented as~\gls{zk-snark}.
+%\subsection{Zero-Knowledge Proofs}\label{subsec:zero-knowledge-proofs}
+%A~\gls{zkp} is a cryptographic method that allows one party to prove to another party that something is true without revealing any information.
+%
+%Two of the subcategories of \gls{zkp}s are \gls{zk-snark} and \gls{zk-stark}.
+%~\gls{zk-snark} is the more common of the two.
+%It uses elliptic curve cryptography to create proofs based on the assumption that it is hard to find the discrete logarithm form the publicly known base point.
+%~\gls{zk-snark} has a start-up ritual which requires a trusted setup by all parties involved that the original proving key is destroyed as to not be able to create fake proofs.
+%A criticism of \gls{zk-snark} is that it is not quantum resistant because of the reliance on elliptic curve cryptography.
+%
+%~\gls{zk-stark} on the other hand, is a newer and more complex~\gls{zkp}.
+%Despite not having non-interactive in its name,~\gls{zk-stark} is also non-interactive.
+%Different form~\gls{zk-snark},~\gls{zk-stark} uses hashing functions to create proofs instead of elliptic curves.
+%This method is post-quantum secure and does not require a trusted setup.
+%It does, however, come with a higher computational cost and is not as widely used and documented as~\gls{zk-snark}.
 
 \subsection{Proposer DoS Attack}\label{subsec:proposer-dos-attack}
 In this subsection, we will be describing the attack that we will be using as a basis for our experiment in ~\autoref{sec:experimental-protocol}.
