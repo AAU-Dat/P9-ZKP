@@ -3,16 +3,21 @@
 \section{Experimental protocol}\label{sec:experimental-protocol}
 
 \subsection{Validators}\label{subsec:validator}
-Our attack is primarily focussed on the so-called validators of Ethereum.
+Our attack is primarily focused on the validators of Ethereum.
+A validator is an entity running on a validator client,
+which, among other things, consists of a balance and a key-pair for identifying it~\cite{Staking}.
+One client can run several validators.
 
-The inner core making the Ethereum PoS work is the continually generated blocks.
-Though, these blocks still require being processed by someone.
-This is what a validator does~\cite{Staking}.
-The validator is responsible for processing transaction, including them in a block,
+The validators have a central job in keeping the blockchain running.
+At each slot, a validator in Ethereum is at random chosen to be responsible for processing transactions,
+including them in a block,
 and then adding this block to the blockchain.
-How we determine, who is going to be a block proposer will be explained in~\autoref{subsec:randao}.
+How we determine who is going to be a block proposer will be explained in~\autoref{subsec:randao}.
+Along with this, the validator is also responsible for attesting blocks proposed by other validators,
+ensuring the liveness of the chain.
 
-To be able to have a single validator, one must deposit 32 ETH, which is ~\$99,776.
+To be able to have a single validator, one must deposit 32 ETH,
+which is ~\$99,776\footnote{As of 2024-11-18 seen on \href{https://beaconcha.in/}{beaconcha.in}}.
 Having this much money at stake should be enough to ensure that a validator acts honestly.
 Doing so will also earn the validator a reward, but contrary to that,
 acting dishonest will get you ETH burned or slashed.
@@ -25,7 +30,10 @@ A base reward, which is used on the reward weights, is calculated for a single v
 \begin{equation}
     BR = EB\cdot(\frac{BRF}{BRPE\cdot \sqrt{\sum{AB}}})
     \label{eq:basereward}
-\end{equation}, where \texttt{BR} is \textit{base reward}, \texttt{EB} is \textit{effective balance}, \texttt{BRF} is \textit{base reward factor} set to 64, \texttt{BRPE} is \textit{base rewards per epoch} set to 4, and \texttt{AB} is \textit{active balance}, which is the total staked ETH by validators.
+\end{equation}, where \texttt{BR} is \textit{base reward},
+\texttt{EB} is \textit{effective balance}, \texttt{BRF} is \textit{base reward factor} set to 64,
+\texttt{BRPE} is \textit{base rewards per epoch} set to 4,
+and \texttt{AB} is \textit{active balance}, which is the total staked ETH by validators.
 
 The reward for a validator is then calculated as follows:
 \begin{equation}
@@ -42,12 +50,16 @@ The summed over weights are the following:
 \end{enumerate}
 Though not the highest weight, the most profitable reward is actually the proposer weight reward.
 The validator is rewarded with this, whenever they are chosen and correctly propose a block to the blockchain.
-But instead of being rewarded this only once, the proposer is getting the reward as many times as there are attestations.
+But instead of being rewarded this only once,
+the proposer is getting the reward as many times as there are attestations.
 \begin{equation}
     BR\cdot\frac{8}{64}\cdot \#attestations\label
     {eq:propreward}
 \end{equation}
-Because the maximum number of attestations is 128, then in a typical and optimal situation, the proposer will get $BR\cdot\frac{8}{64}\cdot128$ in reward when proposing a block~\cite{PoSRewAndPen,consensus-spec-phase-0}.
+Because the maximum number of attestations is 128,
+then in a typical and optimal situation,
+the proposer will get $BR\cdot\frac{8}{64}\cdot128$ in reward
+when proposing a block~\cite{PoSRewAndPen,consensus-spec-phase-0}.
 Thus, with the average amount of staked ETH for a validator being over 32 ETH, which means almost equal chance of being proposer, and with Ethereum having over 1 million validators, validators do not want to miss being the proposer\footnote{As of 2024-11-18 seen on \href{https://beaconcha.in/}{beaconcha.in}}.
 
 \subsubsection{Validator punishments}\label{subsubsec:valpunish}
@@ -62,21 +74,25 @@ To calculate how much ETH is retained after burning per offline epoch, ~$n$, the
 \begin{equation}
 \left(1-\frac{1}{IPQ}\right)^\frac{n^2}{2}
 \label{eq:burn}
-\end{equation}, with \texttt{IPQ} being the \textit{inactivity penalty quotient} set to $2^{26}$~\cite{consensus-spec-phase-0}.
+\end{equation},
+with \texttt{IPQ} being the \textit{inactivity penalty quotient} set to $2^{26}$~\cite{consensus-spec-phase-0}.
 
 
 This means that a validator being offline in a single epoch still retains $0,99999999255\%$ of their staked ETH\@.
-A validator would therefore need to be offline for a lot of epochs before eventually being removed for having under 16 staked ETH\@.
+A validator would therefore need
+to be offline for a lot of epochs before eventually being removed for having under 16 staked ETH\@.
 
 
-Slashing happens when only when a validator acts maliciously against the blockchain, and cannot be invoked only by being offline.
+Slashing happens when only when a validator acts maliciously against the blockchain,
+and cannot be invoked only by being offline.
 Slashing happens from at least one of three causes~\cite{PoSRewAndPen}:
 \begin{enumerate}
     \item Proposing two different blocks at the same slot
     \item Attesting a block that surrounds another
     \item Double voting - Attesting to candidates for the same block
 \end{enumerate}
-If this is detected, ~$\frac{1}{32}$ of the validator's staked ETH is immediately burned, and a 36-day removal period of the validator begins, where the staked ETH is gradually burned.
+If this is detected, ~$\frac{1}{32}$ of the validator's staked ETH is immediately burned,
+and a 36-day removal period of the validator begins, where the staked ETH is gradually burned.
 Halfway through this, on day 18, an additional penalty is applied.
 The magnitude of this penalty scales with the total staked ETH of the slashed validators in the 36-day period before the slashing event.
 At worst, a validator can end up having all their ETH burned, if enough other validators are also slashed.
