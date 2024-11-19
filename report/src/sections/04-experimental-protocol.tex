@@ -52,16 +52,22 @@ Thus, with the average amount of staked ETH for a validator being over 32 ETH, w
 
 \subsubsection{Validator punishments}\label{subsubsec:valpunish}
 A validator can also be punished for doing things that do not contribute to the chain performing as it should.
-Ethereum has two kinds of penalties, burning and slashing.
+Ethereum has two kinds of penalties, burning and slashing, where a validator loses some of their staked ETH\@.
+Should a validator lose their ETH and end up below 16 staked ETH, they will be removed~\cite{consensus-spec-phase-0}.
+
 
 Burning happens per epoch when a validator is offline.
 If ETH gets burned, it is gone forever.
-To calculate how much ETH is retained after burning per offline epoch, $n$, the following formula is used:
+To calculate how much ETH is retained after burning per offline epoch, ~$n$, the following formula is used:
 \begin{equation}
 \left(1-\frac{1}{IPQ}\right)^\frac{n^2}{2}
 \label{eq:burn}
 \end{equation}, with \texttt{IPQ} being the \textit{inactivity penalty quotient} set to $2^{26}$~\cite{consensus-spec-phase-0}.
+
+
 This means that a validator being offline in a single epoch still retains $0,99999999255\%$ of their staked ETH\@.
+A validator would therefore need to be offline for a lot of epochs before eventually being removed for having under 16 staked ETH\@.
+
 
 Slashing happens when only when a validator acts maliciously against the blockchain, and cannot be invoked only by being offline.
 Slashing happens from at least one of three causes~\cite{PoSRewAndPen}:
@@ -70,7 +76,11 @@ Slashing happens from at least one of three causes~\cite{PoSRewAndPen}:
     \item Attesting a block that surrounds another
     \item Double voting - Attesting to candidates for the same block
 \end{enumerate}
-If this is detected $\frac{1}{32}$ of the validator's staked ETH is immediately burned and a 36-day removal period begins (TBC)...
+If this is detected, ~$\frac{1}{32}$ of the validator's staked ETH is immediately burned, and a 36-day removal period of the validator begins, where the staked ETH is gradually burned.
+Halfway through this, on day 18, an additional penalty is applied.
+The magnitude of this penalty scales with the total staked ETH of the slashed validators in the 36-day period before the slashing event.
+At worst, a validator can end up having all their ETH burned, if enough other validators are also slashed.
+
 \subsection{RANDAO}\label{subsec:randao}
 
 \subsection{ENR}\label{subsec:enr}
