@@ -84,16 +84,16 @@ At worst, a validator can end up having all their ETH burned, if enough other va
 \subsection{RANDAO}\label{subsec:randao}
 
 \subsection{ENR}\label{subsec:enr}
-A \gls{enr} is a record that contains information about a node in the network~\cite{EIP-778:Ethereum-Node-Records}.
-Ethereum uses \glspl{enr}s as a way
+A~\gls{enr} is a record that contains information about a node in the network~\cite{EIP-778:Ethereum-Node-Records}.
+Ethereum uses~\glspl{enr} as a way
 to package the information that is being sent from node to node during the discovery protocol,
 where nodes discover each other.
 The package contains information like the node's IP address, port, and public key.
 Because of the nature of the discovery protocol, if you where to also be a node in Ethereum,
-you would be able to see the \gls{enr} of all the nodes that you have discovered.
-And since the \gls{enr} contains the IP address and the public key of the node,
+you would be able to see the~\gls{enr} of all the nodes that you have discovered.
+And since the~\gls{enr} contains the IP address and the public key of the node,
 you would be able
-to see the corresponding IP addresses and public keys of all the nodes that has been discovered by the node.
+to see the corresponding IP addresses and public keys of all the nodes that have been discovered by the node.
 
 
 \todo{
@@ -102,5 +102,5 @@ to see the corresponding IP addresses and public keys of all the nodes that has 
     Severity of attack - Slow down node or make node disappear?
 }
 
-\textit{THOUGHT: I think it would make sense to test both a slow node, and a frozen/dead node.
+\textit{THOUGHT (DEPRECATED): I think it would make sense to test both a slow node, and a frozen/dead node.
 Linux kernel Traffic Control (tc) and Netem (part of tc) seems like the best choice for simulating network issues.}
