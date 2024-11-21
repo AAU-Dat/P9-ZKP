@@ -159,19 +159,3 @@ you would be able to see the~\gls{enr} of all the nodes that you have discovered
 And since the~\gls{enr} contains the IP address and the public key of the node,
 you would be able
 to see the corresponding IP addresses and public keys of all the nodes that have been discovered by the node.
-
-\subsection{Proposer DoS Attack}\label{subsec:proposer-dos-attack}
-In this subsection, we will be describing the attack that we will be using as a basis for our experiment in ~\autoref{sec:experimental-protocol}.
-The attack is a~\gls{dos} attack that aims at hitting the proposers selected for creating blocks in the chain.
-Ethereum themselves have mentioned it as a potential attack, and with the current implementation of the consensus algorithm, it seems that this attack is possible to perform~\cite{EthereumSSLE2024,EthereumAttackDefense2024}.
-
-It has been our interest to research the feasibility of this attack and the ones mentioned in~\autoref{sec:attacks-on-ethereum}.
-This has proven to be a difficult task, given that most of our researched attacks happen in the consensus- or execution layer.
-Therefore, as a result of the blockchain algorithm, we are not able to clarify the feasibility of the attacks that we have found.
-For this reason, we have chosen the \textit{Proposer~\gls{dos} attack} as it seems exciting, has not been mitigated yet, and a potential solutions seems to include a~\gls{zkp}.
-%\todo{Does it make sense to mention \# skipped blocks pr day even though we are unsure if any of these are attacks}
-
-The attack possible is because the consensus mechanism uses a publicly known function for choosing the upcoming block proposers.
-The adversary is therefore able to compute this in slight advance of the blockchain, s.t.\ each proposer is now known.
-After this, the adversary can map the proposer's IP addresses and overload their connection.
-A successful attack would leave a proposer unable to propose their block in time.\todo{Should possibly be explained in more detail}
