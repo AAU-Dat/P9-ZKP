@@ -1,6 +1,6 @@
 
 \section{Background}\label{sec:background}
-In this section, we will go through some of the concepts that will be used in the rest of the paper as well as some surrounding context like attacks performed.
+In this section, we will go through some of the concepts that will be used in the rest of the paper as well as some surrounding context for the attack.
 
 \subsection{Ethereum and Proof of Stake}\label{subsec:ethereum-and-proof-of-stake}
 Ethereum is a blockchain platform that allows developers to create decentralized applications using smart contracts.
@@ -16,6 +16,16 @@ the way the proposer is chosen is through a random proses that is weighted by th
 The blocks also have a time limit of 12 seconds to be created and confirmed else the block will be discarded and the proposer is penalized.
 If a fork happens the validators have to choose which fork to follow.
 This is done by using the \gls{lmd-ghost} algorithm which chooses the fork with the greatest weight of attestations in its history~\cite{EthereumProof-of-stakePoS}.
+
+\subsection{subnets}\label{subsec:subnets}
+The Ethereum network is split up into smaller networks called subnets.
+These subnets are used to help with the scalability of the network.
+The nodes in the network are split into total of 64 subnets and an additional subnet for attestation aggregates with each node being part of at least two subnets.
+Within a subnet, nodes choose a subset of peers in the same subnet to share its messages with.
+Choosing which notes are a part of this subset is done based on the peers performances.
+Nodes send all messages they hear about within a subnet to these best-performing peers.
+The peers a node can reach within the same subnet is called its fanout.
+
 
 
 %\subsection{Zero-Knowledge Proofs}\label{subsec:zero-knowledge-proofs}
