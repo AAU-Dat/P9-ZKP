@@ -153,9 +153,18 @@ you would be able
 to see the corresponding IP addresses and public keys of all the nodes that have been discovered by the node.
 
 
-\subsection{other papers}\label{subsec:other-papers} \todo{new titel}
+\subsection{other paper}\label{subsec:other-papers} \todo{new titel}
 \todo{make acronym for the paper}
-In the paper "deanonymizing ethereum users" the authors show that it is possible to deanonymize users on the Ethereum network by using the~\gls{enr} of the nodes.
+In the paper "deanonymizing ethereum users" the authors show that it is possible to deanonymize validators on the Ethereum network by observing attestations and subscribing to subnets.
+This paper is relevant to our work as it shows that it is possible to get information about the validators on the network.
+This paper is also the main inspiration for our attack.
+The paper takes advantage of the attestations and subnet setup to get information about the validators.
+For their setup they use a custom version of a Prysm node called RAINBOW that subscribe to all subnets, and they use to log and color the information gathered.
+This information consists of all attestations, their origin, and their origin subnet, all advertised static subscriptions of our peers and precise connection data for all nodes we interact with.
+To help speed up the discovery of the peers they also used a crawler to more quickly find the peers using the discovery protocol and the peer tables.
+When they execute their experiment they set up four nodes spread out across four different geographical locations.
+They then let the nodes run for three days and managed to deanonymize 235,719 validators.
+
 
 
 \subsection{Proposer DoS Attack}\label{subsec:proposer-dos-attack}
