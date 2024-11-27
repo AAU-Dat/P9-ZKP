@@ -139,6 +139,24 @@ The magnitude of this penalty scales with the total staked ETH of the slashed va
 At worst, a validator can end up having all their ETH burned, if enough other validators are also slashed.
 
 \subsection{RANDAO}\label{subsec:randao}
+As mentioned in~\autoref{subsec:validator}, the validators are chosen to propose a block by a random-number-generator called RANDAO\footnote{\href{https://github.com/randao/randao}{RANDAO - GitHub}}.
+The random selection is decided by the RANDAO algorithm, which is used every slot.
+Each chosen proposer will get the RANDAO value computed at the previous slot and \texttt{XOR} it with the hash of their private key and epoch number.
+
+
+This creates what is called the RANDAO reveal.
+It can be verified with the proposer's public key.
+This, of course, happens at all 32 slots of an epoch, making up the randomness of the reveal.
+At the end of each epoch, the latest reveal constitutes to the seed, which is used to determine who the next proposers are going to be.
+
+
+Being chosen as a block proposer comes with some duties, such as creating the block.
+This means that they need to know in advance if they are going to be the proposer of a block.
+
+The proposer selection among the validators is done two epochs in advance~\cite{random-selection}.
+More specifically, the selection for epoch $n+2$ happens at the end of epoch $n$~\cite{upgrading-ethereum-randomness}.
+This means that a validator knows at least one epoch, at most two epochs, in advance if they are proposing a block.
+
 
 \subsection{ENR}\label{subsec:enr}
 A~\gls{enr} is a record that contains information about a node in the network~\cite{EIP-778:Ethereum-Node-Records}.
