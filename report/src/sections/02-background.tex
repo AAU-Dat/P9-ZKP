@@ -1,6 +1,6 @@
 
 \section{Background}\label{sec:background}
-In this section, we will go through some of the concepts that will be used in the rest of the paper as well as some surrounding context like attacks performed.
+In this section, we will go through some of the concepts that will be used in the rest of the paper as well as some surrounding context for the attack.
 
 \subsection{Ethereum and Proof of Stake}\label{subsec:ethereum-and-proof-of-stake}
 Ethereum is a blockchain platform that allows developers to create decentralized applications using smart contracts.
@@ -16,6 +16,17 @@ the way the proposer is chosen is through a random proses that is weighted by th
 The blocks also have a time limit of 12 seconds to be created and confirmed else the block will be discarded and the proposer is penalized.
 If a fork happens the validators have to choose which fork to follow.
 This is done by using the \gls{lmd-ghost} algorithm which chooses the fork with the greatest weight of attestations in its history~\cite{EthereumProof-of-stakePoS}.
+
+\subsection{subnets}\label{subsec:subnets}
+The Ethereum network is split up into smaller networks called subnets.
+Being subscribed to a subnet is also be referred to as being backbone of a subnet.
+These subnets are used to help with the scalability of the network.
+The nodes in the network are split into total of 64 subnets and an additional subnet for attestation aggregates with each node being part of at least two subnets.
+Within a subnet, nodes choose a subset of peers in the same subnet to share its messages with.
+Choosing which notes are a part of this subset is done based on the peers performances.
+Nodes send all messages they hear about within a subnet to these best-performing peers.
+The peers a node can reach within the same subnet is called its fanout~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
+
 
 
 %\subsection{Zero-Knowledge Proofs}\label{subsec:zero-knowledge-proofs}
@@ -159,6 +170,24 @@ you would be able to see the~\gls{enr} of all the nodes that you have discovered
 And since the~\gls{enr} contains the IP address and the public key of the node,
 you would be able
 to see the corresponding IP addresses and public keys of all the nodes that have been discovered by the node.
+
+
+\subsection{other paper}\label{subsec:other-papers} \todo{new titel}
+\todo{make acronym for the paper}
+In the paper "Deanonymizing Ethereum Validators: The P2P Network Has a Privacy Issue" the authors show that it is possible to deanonymize validators on the Ethereum network by observing attestations and subscribing to subnets~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
+This paper is relevant to our work as it shows that it is possible to get information about the validators on the network.
+This paper is also the main inspiration for our attack.
+The paper takes advantage of the attestations, including information such as the IP of the sender node, and subnet setup to get information about the validators.
+For their setup they use a custom version of a Prysm node called RAINBOW that subscribe to all subnets, and they use to log and color the information gathered.
+This information consists of all attestations, their origin, and their origin subnet, all advertised static subscriptions of our peers and precise connection data for all nodes we interact with.
+To help speed up the discovery of the peers they also used a crawler to more quickly find the peers using the discovery protocol and the peer tables.
+In their execution of their experiment they set up four nodes spread out across four different geographical locations.
+They then let the nodes run for three days and managed to deanonymize 235,719 validators and reached out to 11,219 peers.
+These peers were also divided into 4 categories based on their heuristic.
+Those being deanonymized where they located validators on the machine with the heuristic conditions being upheld, No validators where they did not receive a single non-backbone attestation received from the peer, and so they assume that there are no validators on the peer, 64 subnets where they never receive a non-backbone attestation from the peer which makes it impossible to deanonymize the validators and the rest where they got at least one non-backbone attestation but where not able to locate any validators on the peer.
+
+
+
 
 \subsection{Proposer DoS Attack}\label{subsec:proposer-dos-attack}
 In this subsection, we will be describing the attack that we will be using as a basis for our experiment in ~\autoref{sec:experimental-protocol}.
