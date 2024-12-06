@@ -25,3 +25,52 @@ The heuristic includes four criteria being:
     \item The number of attestations we receive for the validator v from the peer p exceeds the mean number of attestations per validator from peer p by two standard deviations.
 \end{itemize}
 \todo{is it fine to just copy the criteria from the paper word for word?}
+
+\subsection{Attack implementation}\label{subsec:attack-implementation}
+As mentioned in x~\todo{reference to subsection above},
+the work in this paper revolves around modifying a fork of the Prysm consensus client.
+An important thing to keep in mind is that the core functionality of Prysm is never changed.
+So no changes have been made to variables already being used in the Prysm client.
+
+Instead, to be able to implement the attack,
+it is a case of finding where the different functionalities are written in the code.
+It is enough to modify just two classes in the code to reach a point where the attack is possible.
+
+As mentioned in~\todo{reference to subsection above} two entities are logged, peers and attestations.
+This translates almost directly to the code in the Prysm client, as each of these can be handled by a class each. \todo{How much are we allowed to say? We assume mentioning which classes/functions to modify is unethical}
+
+\subsubsection{Peers}\label{subsubsec:peers}
+The logs of the attestations share similarities with the logs of the peers, so the peers will be described first.
+
+A pointer to a \texttt{Service} object is typically maintained in the different classes of the Prysm code.
+This object is an implementation of an interface responsible for handling functionality coupled with the given class.
+The class that handles~\gls{p2p} connections has got this as well, with several specific functions for handling a peer.
+
+Because of said object, information about all earlier or connected peers is available.
+Set to run every minute, the modified code requests all peers and iterates through them,
+logging the information mentioned in~\todo{reference above subsection}.
+
+
+Also in each iteration,
+the collected information is sent to an \texttt{sqlite3} database such the data can be processed later.
+
+\subsubsection{Attestations}\label{subsubsec:attestations}
+Everything logged in for the peers is also logged for the attestations,
+as there is always an underlying node sending each attestation.
+
+The class handling the attestations also has a \texttt{Service} interface implementation.
+This implementation primarily includes functions specific for the attestations, and not peers.
+Therefore, each \texttt{Service} object has a pointer to a configuration of the running chain.
+Referencing this pointer allows the class to access functions as the ones available in the~\gls{p2p} class.
+
+Instead of being logged for once every minute, as in~\autoref{subsubsec:peers},
+we log information about an attestation whenever we receive one.
+
+With the proposer DoS attack in mind, we are interested in receiving the public key of the validator,
+who is the creator of the attestation.
+Getting this requires little effort,
+as there already exists a function which uses the attestation's data to get public keys.
+We can use this public key in another existing function to get the ID of the validator.
+
+After collection all the information available for an attestation,
+the data is logged to a database as in~\autoref{subsubsec:peers}.
