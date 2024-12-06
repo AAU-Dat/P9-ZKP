@@ -27,7 +27,7 @@ The heuristic includes four criteria being:
 \todo{is it fine to just copy the criteria from the paper word for word?}
 
 \subsection{Attack implementation}\label{subsec:attack-implementation}
-As mentioned in x~\todo{reference to subsection above},
+As mentioned in~\autoref{subsec:setup},
 the work in this paper revolves around modifying a fork of the Prysm consensus client.
 An important thing to keep in mind is that the core functionality of Prysm is never changed.
 So no changes have been made to variables already being used in the Prysm client.
@@ -48,7 +48,7 @@ The class that handles~\gls{p2p} connections has got this as well, with several 
 
 Because of said object, information about all earlier or connected peers is available.
 Set to run every minute, the modified code requests all peers and iterates through them,
-logging the information mentioned in~\todo{reference above subsection}.
+logging the information mentioned in~\autoref{subsec:setup}.
 
 
 Also in each iteration,
@@ -74,3 +74,38 @@ We can use this public key in another existing function to get the ID of the val
 
 After collection all the information available for an attestation,
 the data is logged to a database as in~\autoref{subsubsec:peers}.
+
+\subsubsection{Data processing}
+
+\subsubsection{Exploiting RANDAO for a DoS attack}
+\todo{Where should this section be?}
+Having de-anonymized validators means that the~\gls{randao} proposer selection is vulnerable, but not limited, to a DoS attack.
+More specifically, it is possible to perform the Proposer DoS attack as mentioned in~\autoref{subsec:proposer-dos-attack}.
+
+In~\autoref{subsec:randao}, we found that the proposers for an entire epoch are chosen at least one epoch in advance.
+Gathering the proposer duties can be easily obtained, as Ethereum provides an API endpoint for the blockchain, providing information on the chain.~\footnote{The API calls are found \href{https://ethereum.github.io/beacon-APIs/#/Validator/getProposerDuties}{here.}}.
+The adversary would only need an Ethereum node to use this API.
+A validator is not required.
+
+The output of this call returns the chosen validator's public key, ID, and the slot in which they are chosen to propose a block.
+
+Therefore, a list of the de-anonymized validators could be iterated, where the goal of the adversary would be to match the proposers for the upcoming epoch.
+Included in the de-anonymization is the IP-addresses of the validator as well as their ID and public key.
+So having matched the upcoming proposers with de-anonymized validators, an adversary now ideally knows the IP-addresses of several upcoming proposers.
+
+This allows for the adversary to DoS the specific IP-address, which could leave the proposer inactive at their designated slot.
+
+
+Several reasons can explain why an adversary would be interested in performing this kind of attack.
+This counts both for adversaries running a node with validators and adversaries only running a node in the network
+
+
+The first reason which only requires de-anonymization, could be to exploit the inactivity penalization, which is mentioned in~\autoref{subsubsec:valpunish}.
+The adversary could make validators lose money for being inactive.
+Also, the adversaries themselves gain little from this attack.
+One could be interested in getting people kicked from being a validator for being 16 ether.
+But it can quickly be derived from~\autoref{eq:burn} that it would require the DoS attack to be ongoing for at least 9645 epochs before a validator goes from 32 ether to under 16 ether.
+
+Having more focus on targeting upcoming proposers, the adversary can limit the rewards that the proposers are promised.
+Proposers get the best reward after proposing a block, see~\autoref{subsubsec:valrewards}, so the adversary could limit the rewards given out to proposers.
+In the worst case, as the total amount of ether is dynamic, this could lead to a decrease in the total amount of ether.
