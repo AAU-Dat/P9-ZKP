@@ -11,7 +11,8 @@ To start receiving attestations and reaching and connecting other peers, the cli
 Since the experiment is of an adversarial nature, the client was connected to a testnet insted of the mainnet.
 While the client was running, it was able to log attestations received and peers discovered gaining their IPs, the subnets that the attestations were sent to, the subnet that the peer was in, the public key associated with the attestation and more.
 \todo {mabye add image of tableheaders here for vizualization}
-The data that was logged was then stored in a database for further analysis sorted into categories depending on if the attestation was sent to a subnet that the peer already was subscribed to or not, if the peer is subscribed to every subnet and if the peer never sent an attestation.
+The data, that was logged, was then stored in a database for further analysis.
+Using this data different peers sorted into categories depending on things like the attestation was sent to a subnet that the peer already was subscribed to or not, if the peer is subscribed to every subnet and if the peer never sent an attestation.
 When it comes to deanonymizing the validators, we used the same heuristic as in the paper by~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}. \todo{Paper name maybye}
 The heuristic includes four criteria being:
 \begin{itemize}
@@ -25,6 +26,12 @@ The heuristic includes four criteria being:
     \item The number of attestations we receive for the validator v from the peer p exceeds the mean number of attestations per validator from peer p by two standard deviations.
 \end{itemize}
 \todo{is it fine to just copy the criteria from the paper word for word?}
+The first criterion is that only look at the peers which we receive the most attestations from.
+The second criterion is there because if the peer is subscribed to every subnet then we will never receive a non-backbone attestation form that peer, which makes it hard to deanonymize any validates on the peer.
+The third criterion is there to make sure that we have enough data form the peer.
+The last criterion is there to make sure that the peer is not participating in any uncommon or non-standard behavior.
+In the cases where all the criteria are met, we can be confident that the peer is hosting validators.
+
 
 \subsection{Attack implementation}\label{subsec:attack-implementation}
 As mentioned in x~\todo{reference to subsection above},
