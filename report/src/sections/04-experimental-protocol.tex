@@ -106,6 +106,11 @@ Also, the adversaries themselves gain little from this attack.
 One could be interested in getting people kicked from being a validator for being 16 ether.
 But it can quickly be derived from~\autoref{eq:burn} that it would require the DoS attack to be ongoing for at least 9645 epochs before a validator goes from 32 ether to under 16 ether.
 
+
 Having more focus on targeting upcoming proposers, the adversary can limit the rewards that the proposers are promised.
 Proposers get the best reward after proposing a block, see~\autoref{subsubsec:valrewards}, so the adversary could limit the rewards given out to proposers.
-In the worst case, as the total amount of ether is dynamic, this could lead to a decrease in the total amount of ether.
+In the worst case, this could lead to a decrease in the total amount of ether, as it is dynamically changing with the chain.
+
+
+Both of the aforementioned reasons required only a node in Ethereum, but the adversary themselves did not gain any reward from the attack.
+This could be a possibility if the adversary is in control of a validator. \todo{finish with mev article}
