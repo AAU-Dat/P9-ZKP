@@ -1,6 +1,31 @@
 
 
 \section{Experimental protocol}\label{sec:experimental-protocol}
+In this section, we describe the setup of the experiment that will be conducted as well as the experiment itself.
+The section will also cover the workings of the attack that will ve performed.
+
+\subsection{Setup}\label{subsec:setup}
+The setup of the experiment is as follows: First we modified a prysm client to include logging of attestations received by the client and all the peer that the node has discovered.
+The client was then run on a virtual machine hosted on Strato Claaudia through the Aalborg University.
+To start receiving attestations and reaching and connecting other peers, the client was connected to the Holesky testnet.
+Since the experiment is of an adversarial nature, the client was connected to a testnet insted of the mainnet.
+While the client was running, it was able to log attestations received and peers discovered gaining their IPs, the subnets that the attestations were sent to, the subnet that the peer was in, the public key associated with the attestation and more.
+\todo {mabye add image of tableheaders here for vizualization}
+The data that was logged was then stored in a database for further analysis sorted into categories depending on if the attestation was sent to a subnet that the peer already was subscribed to or not, if the peer is subscribed to every subnet and if the peer never sent an attestation.
+When it comes to deanonymizing the validators, we used the same heuristic as in the paper by~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}. \todo{Paper name maybye}
+The heuristic includes four criteria being:
+\begin{itemize}
+    \item The proportion of non-backbone attestations for validator v exceed
+    \begin{equation}
+                                                                                 0.9*\left(\frac{64-n_{sub}(p)}{64}\right)
+                                                                                 \label{eq:heurestic}
+    \end{equation} where nsub(p) is the average number of subnets the peer is subscribed over the connection’s duration.
+    \item The peer is not subscribed to all 64 subnets.
+    \item TWe receive at least every tenth attestation we expect for the validator v from the peer.
+    \item The number of attestations we receive for the validator v from the peer p exceeds the mean number of attestations per validator from peer p by two standard deviations.
+\end{itemize}
+\todo{is it fine to just copy the criteria from the paper word for word?}
+
 \subsection{Attack implementation}\label{subsec:attack-implementation}
 As mentioned in x~\todo{reference to subsection above},
 the work in this paper revolves around modifying a fork of the Prysm consensus client.
