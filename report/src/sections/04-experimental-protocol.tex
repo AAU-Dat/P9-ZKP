@@ -36,7 +36,7 @@ Instead, to be able to implement the attack,
 it is a case of finding where the different functionalities are written in the code.
 It is enough to modify just two classes in the code to reach a point where the attack is possible.
 
-As mentioned in~\todo{reference to subsection above} two entities are logged, peers and attestations.
+As mentioned in~\autoref{subsec:setup} two entities are logged, peers and attestations.
 This translates almost directly to the code in the Prysm client, as each of these can be handled by a class each. \todo{How much are we allowed to say? We assume mentioning which classes/functions to modify is unethical}
 
 \subsubsection{Peers}\label{subsubsec:peers}
@@ -113,4 +113,4 @@ In the worst case, this could lead to a decrease in the total amount of ether, a
 
 
 Both of the aforementioned reasons required only a node in Ethereum, but the adversary themselves did not gain any reward from the attack.
-This could be a possibility if the adversary is in control of a validator. \todo{finish with mev article}
+This could be a possibility if the adversary is in control of a validator~\todo{Note to self: Write about incentive from MEV (include found article)}.
