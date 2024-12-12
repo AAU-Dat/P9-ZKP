@@ -86,6 +86,7 @@ In~\autoref{subsec:randao}, we found that the proposers for an entire epoch are 
 Gathering the proposer duties can be easily obtained, as Ethereum provides an API endpoint for the blockchain, providing information on the chain.~\footnote{The API calls are found \href{https://ethereum.github.io/beacon-APIs/#/Validator/getProposerDuties}{here.}}.
 The adversary would only need an Ethereum node to use this API.
 A validator is not required.
+This is especially beneficial, as one can perform the attack without any financial risks.
 
 The output of this call returns the chosen validator's public key, ID, and the slot in which they are chosen to propose a block.
 
