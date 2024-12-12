@@ -11,9 +11,10 @@ The transition was done in a series of upgrades called the Ethereum 2.0 upgrade.
 It works by creating validators based on the amount of cryptocurrency they have staked.
 Then it selects some of these validators as proposers to be the ones to create new blocks, which then are confirmed by the rest of the validators.
 The proposers then get rewarded for creating a valid block and the validators get rewarded for confirming the block.
-Block proposing happens within epochs of 32 blocks and for each epoch a group of validators is selected and from them a proposer is chosen.
+Block proposing happens within epochs of 32 blocks and for each block a validator is selected as a proposer by the protocol.
 The way the proposer is chosen is through a random process that is weighted by the amount of cryptocurrency the validator has staked, and by using the publicly available \gls{randao} algorithm to simulate the random selection.
-The proposer has a time limit of 12 seconds each slot to be created and confirmed a block else the proposer will be penalized.
+
+A block needs to be proposed by the designated proposer for the slot and confirmed by other validators within a time limit of the slot, which is 12 seconds.
 If a fork happens, the validators have to choose which fork to follow.
 This is done by using the \gls{lmd-ghost}~\cite{EthereumProof-of-stakePoS} algorithm which chooses the fork with the greatest weight of attestations in its history.
 
@@ -24,7 +25,7 @@ These subnets are used to help with the scalability of the network.
 The nodes in the network are split into total of 64 subnets and an additional subnet for attestation aggregates with each node being part of at least two subnets.
 Within a subnet, nodes choose a subset of peers in the same subnet to share its messages with.
 Choosing which nodes are a part of this subset is done based on the peers performances.
-Nodes send all messages they receive about within a subnet to these best-performing peers.
+Nodes send all messages they receive within a subnet to these best-performing peers.
 The peers a node can reach within the same subnet is called its fanout~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
 
 
@@ -53,7 +54,7 @@ One client can run several validators.
 At each slot, the \gls{randao} algorithm is used to select a validator to be responsible for processing transactions,
 including them in a block,
 and then adding this block to the blockchain.
-How to determine who is going to be a block proposer will be explained in~\autoref{subsec:randao}.
+How to determine who is going to be a block proposer is explained in~\autoref{subsec:randao}.
 Along with this, the validator is also responsible for attesting blocks proposed by other validators,
 ensuring the liveness of the chain.
 
@@ -66,7 +67,9 @@ The rewards and punishments are described in the following section.
 \subsubsection{Validator rewards}\label{subsubsec:valrewards}
 Validators are rewarded for several different actions~\cite{PoSRewAndPen}.
 Each of these actions is rewarded with different weights,
-but they all depend on the total amount of staked ether by validators and the validator's own staked amount limited to 32 ETH\@.
+but they all depend on the total amount of staked ether by validators and the validator's own staked amount.
+Though the calculated reward will not get larger above 32 ETH\@.
+
 A base reward, which is used on the reward weights, is calculated for a single validator as follows where \texttt{BR} is \textit{base reward} \texttt{EB} is \textit{effective balance}, \texttt{BRF} is \textit{base reward factor} set to 64,
 \texttt{BRPE} is \textit{base rewards per epoch} set to 4,
 and \texttt{AB} is \textit{active balance}, which is the total staked ether by validators:
@@ -81,7 +84,7 @@ The reward for a validator is then calculated as follows:
     \frac{\sum{weights}}{64}\cdot BR
     \label{eq:valrewards}
 \end{equation}
-What is included in the sum of weights varies depending on what the task was and in the task was done within that timeframe.
+What is included in the sum of weights varies depending on what the completed task was.
 The values of the different weights are the following:
 \begin{enumerate}
     \item Timely source vote: 14
@@ -90,8 +93,8 @@ The values of the different weights are the following:
     \item Sync reward: 2
     \item Proposer weight: 8
 \end{enumerate}
-Though not the highest weight, the most profitable reward is actually the proposer weight reward.
-This is because the validator is rewarded with this, whenever they are chosen as a proposer and correctly proposes a block to the blockchain.
+Though it does not have the largest weight, the most profitable reward is the proposer weight reward.
+This reward is given to the validator, whenever they are chosen as a proposer and correctly propose a block to the blockchain.
 In this case, instead of being rewarded this only once,
 the proposer is getting a reward for each valid attestation included in the block proposed.
 \begin{equation}
@@ -103,7 +106,11 @@ then in a typical and optimal situation,
 the proposer will get $BR\cdot\frac{8}{64}\cdot128$ in reward
 when proposing a block~\cite{PoSRewAndPen,consensus-spec-phase-0}.
 Because of that validators does not want to miss being the proposer.
-especially with the average amount of staked ether for a validator is over 32 ETH, which means almost equal chance of being proposer, and with Ethereum having over 1 million validators~\footnote{As of 2024-11-18 seen on~\href{https://beaconcha.in/}{beaconcha.in}}.
+especially since the chance if getting to propose a block is relatively low.
+ The reason is first of all that the average amount of staked ether for a validator is over 32 ETH\@.
+As the validator's probability of being proposer does not get higher when over 32 staked ether, there is an almost equal chance of being proposer.
+which means almost equal chance of being proposer, and
+With Ethereum having over 1 million validators~\footnote{As of 2024-11-18 seen on~\href{https://beaconcha.in/}{beaconcha.in}}.
 
 \subsubsection{Validator punishments}\label{subsubsec:valpunish}
 A validator can also be punished for doing things that do not contribute to the chain performing as it should.
@@ -141,14 +148,14 @@ The magnitude of this penalty scales with the total staked ether of the slashed 
 At worst, a validator can end up having all their ether burned, if enough other validators are also slashed.
 
 \subsection{RANDAO}\label{subsec:randao}
-As mentioned in~\autoref{subsec:validator}, the validators are chosen to propose a block by a random-number-generator called RANDAO\footnote{\href{https://github.com/randao/randao}{RANDAO - GitHub}}.
-The random selection is decided by the RANDAO algorithm, which is used every slot.
-Each chosen proposer will get the RANDAO value computed at the previous slot and \texttt{XOR} it with the hash of their private key and epoch number.
+As mentioned in~\autoref{subsec:validator}, the validators are chosen to propose a block by a random-number-generator called \gls{randao}\footnote{\href{https://github.com/randao/randao}{RANDAO - GitHub}}.
+The random selection is decided by the \gls{randao} algorithm, which is used every slot.
+Each chosen proposer will get the \gls{randao} value computed at the previous slot and \texttt{XOR} it with the hash of their private key and epoch number.
 
 
-This creates what is called the RANDAO reveal.
+This creates what is called the \gls{randao} reveal.
 It can be verified with the proposer's public key.
-This, of course, happens at all 32 slots of an epoch, ensuring the randomness of the process of the reveal.
+This, of course, happens at all 32 slots of an epoch, ensuring the randomness of the protocol.
 At the end of each epoch, the latest reveal constitutes to the seed, which is used to determine who the next proposers are going to be.
 
 
@@ -166,7 +173,7 @@ Ethereum uses~\glspl{enr} as a way
 to package the information that is being sent from node to node during the discovery protocol,
 where nodes discover each other.
 The package contains information like the node's IP address, port, and public key.
-Because of the nature of the discovery protocol, if one where to also be a node in Ethereum,
+Because of the nature of the discovery protocol, if one were to also have a node in Ethereum,
 one would be able to see the~\gls{enr} of all discovered nodes.
 And since the~\gls{enr} contains the IP address and the public key of the node,
 you would be able
