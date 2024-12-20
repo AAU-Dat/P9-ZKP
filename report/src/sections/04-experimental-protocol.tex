@@ -7,12 +7,32 @@ The section will also cover the workings of the attack that will ve performed.
 \subsection{Setup}\label{subsec:setup}
 The setup of the experiment is as follows: First we modified a prysm client to include logging of attestations received by the client and all the peer that the node has discovered.
 The client was then run on a virtual machine hosted on Strato Claaudia through the Aalborg University.
+
 To start receiving attestations and reaching and connecting other peers, the client was connected to the Holesky testnet.
-Since the experiment is of an adversarial nature, the client was connected to a testnet insted of the mainnet.
-While the client was running, it was able to log attestations received and peers discovered gaining their IPs, the subnets that the attestations were sent to, the subnet that the peer was in, the public key associated with the attestation and more.
+Since the experiment is of an adversarial nature, the client was connected to a testnet instead of the mainnet.
+
+While the client was running, it was able to log information from the received attestations as well as on the peers it discovered.
+Among other things, the client logged peer~\glspl{enr}, the subnets that the attestations were sent to, the subnet that the peer was in and the public key associated with the attestation.
 \todo {mabye add image of tableheaders here for vizualization}
-The data that was logged was then stored in a database for further analysis sorted into categories depending on if the attestation was sent to a subnet that the peer already was subscribed to or not, if the peer is subscribed to every subnet and if the peer never sent an attestation.
-When it comes to deanonymizing the validators, we used the same heuristic as in the paper by~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}. \todo{Paper name maybye}
+The data that was logged was then stored in a database for further analysis.
+After this, the peers were sorted into the same four categories as mentioned in the~\gls{de-anon paper}~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
+The categories are:
+\begin{itemize}
+    \item Deanonymized
+    \item No validators
+    \item 64 subnets
+    \item Rest
+\end{itemize}
+
+\textbf{Deanonymized:} One or more validators have been discovered on this peer.
+
+\textbf{No validators:} No validators have been discovered on this node, as we did not receive a non-backbone attestation.
+
+\textbf{64 subnets:} The peer was subscribed to all 64 subnets, so we are not able to tell backbone attestations from non-backbone attestations.
+
+\textbf{Rest:} Peers where we receive non-backbone attestations, but we were not able to identify any validators.
+
+When it comes to deanonymizing the validators, we used the same heuristic as in the~\gls{de-anon paper}~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
 The heuristic includes four criteria being:
 \begin{itemize}
     \item The proportion of non-backbone attestations for validator v exceed
@@ -37,7 +57,7 @@ it is a case of finding where the different functionalities are written in the c
 It is enough to modify just two classes in the code to reach a point where the attack is possible.
 
 As mentioned in~\autoref{subsec:setup} two entities are logged, peers and attestations.
-This translates almost directly to the code in the Prysm client, as each of these can be handled by a class each. \todo{How much are we allowed to say? We assume mentioning which classes/functions to modify is unethical}
+This translates almost directly to the code in the Prysm client, as each of these can be handled by a class each.
 
 \subsubsection{Peers}\label{subsubsec:peers}
 The logs of the attestations share similarities with the logs of the peers, so the peers will be described first.
@@ -75,10 +95,8 @@ We can use this public key in another existing function to get the ID of the val
 After collection all the information available for an attestation,
 the data is logged to a database as in~\autoref{subsubsec:peers}.
 
-\subsubsection{Data processing}
-
-\subsubsection{Exploiting RANDAO for a DoS attack}
-\todo{Where should this section be?}
+\subsubsection{Exploiting RANDAO for a Proposer DoS attack}
+Applying the aforementioned heuristics to the logged data will enable us to get a list of de-anonymized validators.
 Having de-anonymized validators means that the~\gls{randao} proposer selection is vulnerable, but not limited, to a DoS attack.
 More specifically, it is possible to perform the Proposer DoS attack as mentioned in~\autoref{subsec:proposer-dos-attack}.
 
