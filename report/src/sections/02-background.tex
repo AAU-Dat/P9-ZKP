@@ -22,10 +22,27 @@ A block needs to be proposed by the designated proposer for the slot and confirm
 If a fork happens, the validators have to choose which fork to follow.
 This is done by using the \gls{lmd-ghost}~\cite{EthereumProof-of-stakePoS} algorithm which chooses the fork with the greatest weight of attestations in its history.
 
+\subsection{Attestations}\label{subsec:attestations}
+Each epoch, a validator is expected to broadcast what is called an attestation~\cite{attestations}.
+The overall purpose of this message is to make sure that validators agree on the canonical chain.
+
+A single validator is assigned to a single slot each epoch, where they must publish their attestation.
+In this attestation, the validator among other things votes for what it sees as the \textit{source} and \textit{target}.
+
+The source is what the validator sees as being the most recent justified block.
+
+The target is what the validator sees as being the first block in the current epoch.
+
+A committee is then all validators who are set to attest in the same slot.
+All votes broadcast in each subnet of the committee are collected by 16 assigned aggregators per subnet.
+These collect the votes that are similar to their own into an aggregation and broadcast this to the network.
+These are then to be included in the block of the designated slot.
+
 \subsection{Subnets}\label{subsec:subnets}
 The Ethereum network is split up into smaller networks called subnets.
 Being subscribed to a subnet is also be referred to as being backbone of a subnet.
 These subnets are used to help with the scalability of the network.
+
 The nodes in the network are split into total of 64 subnets and an additional subnet for attestation aggregates with each node being part of at least two subnets.
 Within a subnet, nodes choose a subset of peers in the same subnet to share its messages with.
 Choosing which nodes are a part of this subset is done based on the peers performances.
