@@ -70,10 +70,12 @@ The peers a node can reach within the same subnet is called its fanout~\cite{hei
 Our attack is primarily focused on the validators of Ethereum.
 A validator is an entity running on a validator client,
 which, among other things, consists of a balance and a key-pair for identifying it~\cite{Staking}.
+
 For a validator client to run, it needs to be run in cooperation with a consensus node client.
 A consensus node client is then able to run an unbounded number of validators.
 Having several validators running in cooperation with a single consensus node means that they all share identity with that node.
 This includes data such as IP addresses and the ID of the node.
+
 At each slot, the~\gls{randao} algorithm is used to select a validator to be responsible for processing transactions,
 including them in a block,
 and then adding this block to the blockchain.
@@ -255,18 +257,19 @@ to see the corresponding IP addresses and public keys of all the nodes that have
 
 In the paper~\gls{de-anon paper} the authors show that it is possible to deanonymize validators on the Ethereum network by observing attestations and subscribing to subnets~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
 This paper is relevant to our work as it shows that it is possible to get information about the validators on the network.
-This paper is also the main inspiration for our attack.
+It is also the main inspiration for our attack.
+
 The paper takes advantage of the attestations, including information such as the IP of the sender node, and subnet setup to get information about the validators.
-For their setup they use a custom version of a Prysm node called RAINBOW that subscribe to all subnets, and they use to log and color the information gathered.
-This information consists of all attestations, their origin, and their origin subnet, all advertised static subscriptions of our peers and precise connection data for all nodes we interact with.
-To help speed up the discovery of the peers they also used a crawler to more quickly find the peers using the discovery protocol and the peer tables.
-In their execution of their experiment they set up four nodes spread out across four different geographical locations.
+For their setup, they use a custom version of a Prysm node called RAINBOW that subscribes to all subnets, and they use to it log peers and breaking peer inputs down into "colors" of the validators.
+This information consists of all attestations, their origin, and their origin subnet, all advertised static subscriptions of our peers and precise connection data for all nodes they interact with.
+
+To help speed up the discovery of the peers, they also used a crawler to more quickly find the peers using the discovery protocol.
+
+In their execution of their experiment, they set up four nodes spread out across four different geographical locations, two in europe, one in asia, and one in the United States.
 They then let the nodes run for three days and managed to deanonymize 235,719 validators and reached out to 11,219 peers.
 These peers were also divided into 4 categories based on their heuristic.
-Those being deanonymized where they located validators on the machine with the heuristic conditions being upheld, No validators where they did not receive a single non-backbone attestation received from the peer, and so they assume that there are no validators on the peer, 64 subnets where they never receive a non-backbone attestation from the peer which makes it impossible to deanonymize the validators and the rest where they got at least one non-backbone attestation but where not able to locate any validators on the peer.
 
-
-
+Those being, deanonymized, where they located validators on the machine; no validators, where they were not able to apply their heuristics and found no validators; 64 subnets, where they could not deanonymize the validators as the peer was subscribed to all subnets; and rest, where they could not locate any validators after applying the heuristics.
 
 \subsection{Proposer DoS Attack}\label{subsec:proposer-dos-attack}
 In this subsection, we will be describing the attack that we will be using as a basis for our experiment in ~\autoref{sec:experimental-protocol}.
