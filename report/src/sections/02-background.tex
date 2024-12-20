@@ -53,15 +53,65 @@ The peers a node can reach within the same subnet is called its fanout~\cite{hei
 Our attack is primarily focused on the validators of Ethereum.
 A validator is an entity running on a validator client,
 which, among other things, consists of a balance and a key-pair for identifying it~\cite{Staking}.
-One client can run several validators.
-\todo{suggetstion "a picture where all the main actors are visible and connected"}
-At each slot, the \gls{randao} algorithm is used to select a validator to be responsible for processing transactions,
+For a validator client to run, it needs to be run in cooperation with a consensus node client.
+A consensus node client is then able to run an unbounded number of validators.
+Having several validators running in cooperation with a single consensus node means that they all share identity with that node.
+This includes data such as IP addresses and the ID of the node.
+At each slot, the~\gls{randao} algorithm is used to select a validator to be responsible for processing transactions,
 including them in a block,
 and then adding this block to the blockchain.
+This procedure is also illustrated by~\autoref{fig:proposerChoice}.
 How to determine who is going to be a block proposer is explained in~\autoref{subsec:randao}.
 Along with this, the validator is also responsible for attesting blocks proposed by other validators,
 ensuring the liveness of the chain.
 
+
+\begin{figure}[t]
+    \resizebox{\columnwidth}{!}
+    {
+\begin{tikzpicture}
+    \tikzstyle{every node}=[font=\large]
+    \draw [ fill={rgb,255:red,169; green,212; blue,249} ] (9.25,11.75) circle (0.75cm) node {\large Node 1} ;
+    \draw [ fill={rgb,255:red,255; green,138; blue,138} ] (5,9.75) rectangle  node {\LARGE Val} (6.25,8.5);
+    \draw [ fill={rgb,255:red,255; green,138; blue,138} ] (7.5,9.75) rectangle  node {\LARGE Val} (8.75,8.5);
+    \draw [ fill={rgb,255:red,255; green,138; blue,138} ] (10,9.75) rectangle  node {\LARGE Val} (11.25,8.5);
+    \draw [ fill={rgb,255:red,255; green,138; blue,138} ] (12.5,9.75) rectangle  node {\LARGE Val} (13.75,8.5);
+    \draw [ fill={rgb,255:red,169; green,212; blue,249} ] (9.25,0.25) circle (0.75cm) node {\large Node 2} ;
+    \draw [ fill={rgb,255:red,255; green,138; blue,138} ] (5,3.5) rectangle  node {\LARGE Val} (6.25,2.25);
+    \draw [ fill={rgb,255:red,255; green,138; blue,138} ] (7.5,3.5) rectangle  node {\LARGE Val} (8.75,2.25);
+    \draw [ fill={rgb,255:red,255; green,138; blue,138} ] (10,3.5) rectangle  node {\LARGE Val} (11.25,2.25);
+    \draw [ fill={rgb,255:red,255; green,138; blue,138} ] (12.5,3.5) rectangle  node {\LARGE Val} (13.75,2.25);
+    \draw [dashed] (3,7.5) -- (3,3.5);
+    \draw [ fill={rgb,255:red,209; green,209; blue,209} ] (4.75,6.5) rectangle  node {\normalsize Slot 1} (6,5.25);
+    \draw [ fill={rgb,255:red,209; green,209; blue,209} ] (7.25,6.5) rectangle  node {\normalsize Slot 2} (8.5,5.25);
+    \draw [ fill={rgb,255:red,209; green,209; blue,209} ] (9.75,6.5) rectangle  node {\normalsize Slot 3} (11,5.25);
+    \draw [ fill={rgb,255:red,209; green,209; blue,209} ] (12.75,6.5) rectangle  node {\normalsize Slot 32} (14,5.25);
+    \node [font=\large] at (3,8) {Epoch n};
+    \draw [dashed] (15.5,7.5) -- (15.5,3.5);
+    \node [font=\large] at (15.5,8) {Epoch n+1};
+    \node [font=\Huge] at (11.75,6) { \ldots};
+    \draw [->, >=Latex, dashed] (5.5,3.75) -- (5.25,5);
+    \draw [->, >=Latex, dashed] (8,3.75) -- (7.75,5);
+    \draw [->, >=Latex, dashed] (10.5,8.25) -- (10.25,6.75);
+    \draw [->, >=Latex, dashed] (13.25,8.25) -- (13.25,6.75);
+    \draw [->, >=Latex] (3.5,5.75) -- (4.5,5.75);
+    \draw [->, >=Latex] (6.25,5.75) -- (7,5.75);
+    \draw [->, >=Latex] (8.75,5.75) -- (9.5,5.75);
+    \draw [->, >=Latex] (14.25,5.75) -- (15.25,5.75);
+    \draw [->, >=Latex] (8.25,0.75) -- (6.5,2);
+    \draw [->, >=Latex] (8.75,1) -- (8.25,2);
+    \draw [->, >=Latex] (9.75,1) -- (10.25,2);
+    \draw [->, >=Latex] (10.25,0.75) -- (12.25,2);
+    \draw [->, >=Latex] (8.25,11.5) -- (6.5,10);
+    \draw [->, >=Latex] (8.75,11) -- (8.5,10);
+    \draw [->, >=Latex] (9.75,11) -- (10,10);
+    \draw [->, >=Latex] (10.25,11.5) -- (12.25,10);
+\end{tikzpicture}\label{fig:proposerChoiceTikz}}
+\caption{Illustration of validators selected as proposers through an epoch.
+Two random nodes are shown, each having several validators.
+Some of these validators are chosen to propose a block in a designated slot.}
+\label{fig:proposerChoice}
+\end{figure}
 To be able to have a single validator, one must deposit 32 ETH,
 which is ~\$99,776\footnote{As of 2024-11-18 seen on \href{https://beaconcha.in/}{beaconcha.in}}.
 Having this much money at stake should be enough to ensure that a validator acts honestly.
