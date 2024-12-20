@@ -14,6 +14,7 @@ Validators can now decrypt the commitment that matches their identity and propos
 This whole process is and example of~\gls{zkp} where the point is that every validator is able to prove that it is their turn to propose a block without revealing their identity.
 This would make it harder
 for an adversary to perform the Proposer~\gls{dos} attack since the adversary would not know which validator to target.
-But even if this stops the~\gls{dos} attack, it does not prevent the de-anonymization of the validators.
+This will make it a lot harder to execute the~\gls{dos} attack.
+Though, it does not prevent the data collection part of the attack, which is used to de-anonymize the validators.
 But hindering a~\gls{dos} attack in itself is a good reason
 to look at implementing~\gls{ssle} in Ethereum as a further step to improving the security of the network.
