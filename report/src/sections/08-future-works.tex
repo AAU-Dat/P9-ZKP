@@ -3,19 +3,23 @@
 \section{Future work}\label{sec:future-works}
 
 \subsection{Potential mitigations}\label{subsec:potential-mitigations}
-At the moment there exists an improvement proposal
+At the moment, there exists an improvement proposal
 to include a~\gls{ssle} mechanism, called Whisk, in Ethereum~\cite{EthereumResearchSSLE2024}.
+
 This method aims to improve the security of the network by obfuscating the identity of the proposer.
 It does so by making the validators commit to a shared secret which can be bound to a validator's identity and randomized to match the specific validator's identity.
+
 Every epoch a random set of validators are chosen to gather commitments from a set of validators using~\gls{randao}.
 Proposers then shuffle the commitments over the duration of 8182 slots.
 At the end of that period,~\gls{randao} is then used to map the shuffled list onto the slots in the same way it has been done since Ethereum used~\gls{pos}.
 Validators can now decrypt the commitment that matches their identity and propose a block in the slot that they are assigned to.
-This whole process is and example of~\gls{zkp} where the point is that every validator is able to prove that it is their turn to propose a block without revealing their identity.
+
+This whole process is an example of~\gls{zkp} where the point is that every validator is able to prove that it is their turn to propose a block without revealing their identity.
 If an attacker would try to fetch the upcoming proposers, he would only retrieve one of these commitments.
 Therefore, it makes it harder
 for an adversary to perform the Proposer~\gls{dos} attack since the adversary would not know which validator to target.
-This will make it a lot harder to execute the~\gls{dos} attack.
+
 Though, it does not prevent the data collection part of the attack, which is used to de-anonymize the validators.
+
 But hindering a~\gls{dos} attack in itself is a good reason
 to look at implementing~\gls{ssle} in Ethereum as a further step to improving the security of the network.
