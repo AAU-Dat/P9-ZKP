@@ -6,6 +6,12 @@
 At the moment there exists an improvement proposal
 to include a~\gls{ssle} mechanism, called Whisk, in Ethereum~\cite{EthereumResearchSSLE2024}.
 This method aims to improve the security of the network by obfuscating the identity of the proposer.
+It does so by making the validators commit to a shared secret which can be bound to a validators identity and randomized to make to match the specific validator's identity.
+Every epoch a random set of validators are chosen to gather commitments from a set of validators using~\gls{randao}.
+Proposers then shuffle the commitments over the durration of 8182 slots.
+Then~\gls{randao} is used to map the shuffled list onto the slots.
+Validators can now decrypt the commitment that matches their identity and propose a block in the slot that they are assigned to.
+This whole process is and example of~\gls{zkp} where the point is that every validator is able to prove that it is their turn to propose a block without revealing their identity.
 This would make it harder
 for an adversary to perform the Proposer~\gls{dos} attack since the adversary would not know which validator to target.
 But even if this stops the~\gls{dos} attack, it does not prevent the de-anonymization of the validators.
