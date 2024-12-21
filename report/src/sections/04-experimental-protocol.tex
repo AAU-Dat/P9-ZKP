@@ -114,6 +114,7 @@ So having matched the upcoming proposers with de-anonymized validators, an adver
 
 This allows for the adversary to DoS the specific IP-address, which could leave the proposer inactive at their designated slot.
 
+\subsubsection{Reasons for doing the attack}
 
 Several reasons can explain why an adversary would be interested in performing this kind of attack.
 This counts both for adversaries running a node with validators and adversaries only running a node in the network
@@ -131,5 +132,20 @@ Proposers get the best reward after proposing a block, see~\autoref{subsubsec:va
 In the worst case, this could lead to a decrease in the total amount of ether, as it is dynamically changing with the chain.
 
 
-Both of the aforementioned reasons required only a node in Ethereum, but the adversary themselves did not gain any reward from the attack.
-This could be a possibility if the adversary is in control of a validator~\todo{Note to self: Write about incentive from MEV (include found article)}.
+Both of the aforementioned reasons require only a node in Ethereum, but the adversary themselves do not gain any reward from the attack.
+This could be a possibility if the adversary is in control of a validator.
+The reason for this is found in the~\gls{mev}~\cite{mev}.
+
+~\gls{mev} is a reference to the maximum value one can extract from a block production opportunity.
+It is a reward that the proposer can get besides rewards gotten from working on the blockchain, as mentioned in~\autoref{subsubsec:valrewards}.
+The idea of~\gls{mev} is that \textit{searchers} search the network for profitable transaction opportunities.
+These are, for instance, opportunities where people are willing to pay a high transaction fee to the proposer for inclusion in the block.
+These transactions are then added to the pool of transactions to be added in the chain.
+There are more implementations of these searchers, fx Flashbots and MEV-Boost.
+It has been estimated that ~90\% of all Ethereum validators use this kind of software~\cite{cryptoeprint:2023/760}.
+
+So, let us assume a scenario, where an adversary has a validator that is set to propose the block at slot $n$.
+It could then be beneficial for the adversary to perform a~\gls{dos} attack on the proposers of slot $n-1, n-2$, and so on.
+Beginning from slot $n-1$ and down, the more consecutive proposers that are successfully attacked, the more potential gain there is for the adversary.
+This is because the high-paying transactions that were to be included in the previous slots now can be included in the adversary's slot.
+Therefore, the adversary potentially gains more reward from including transactions with higher fees, available because of the attack.
