@@ -22,10 +22,27 @@ A block needs to be proposed by the designated proposer for the slot and confirm
 If a fork happens, the validators have to choose which fork to follow.
 This is done by using the \gls{lmd-ghost}~\cite{EthereumProof-of-stakePoS} algorithm which chooses the fork with the greatest weight of attestations in its history.
 
+\subsection{Attestations}\label{subsec:attestations}
+Each epoch, a validator is expected to broadcast what is called an attestation~\cite{attestations}.
+The overall purpose of this message is to make sure that validators agree on the canonical chain.
+
+A single validator is assigned to a single slot each epoch, where they must publish their attestation.
+In this attestation, the validator among other things votes for what it sees as the \textit{source} and \textit{target}.
+
+The source is what the validator sees as being the most recent justified block.
+
+The target is what the validator sees as being the first block in the current epoch.
+
+A committee is then all validators who are set to attest in the same slot.
+All votes broadcast in each subnet of the committee are collected by 16 assigned aggregators per subnet.
+These collect the votes that are similar to their own into an aggregation and broadcast this to the network.
+These are then to be included in the block of the designated slot.
+
 \subsection{Subnets}\label{subsec:subnets}
 The Ethereum network is split up into smaller networks called subnets.
 Being subscribed to a subnet is also be referred to as being backbone of a subnet.
 These subnets are used to help with the scalability of the network.
+
 The nodes in the network are split into total of 64 subnets and an additional subnet for attestation aggregates with each node being part of at least two subnets.
 Within a subnet, nodes choose a subset of peers in the same subnet to share its messages with.
 Choosing which nodes are a part of this subset is done based on the peers performances.
@@ -53,15 +70,67 @@ The peers a node can reach within the same subnet is called its fanout~\cite{hei
 Our attack is primarily focused on the validators of Ethereum.
 A validator is an entity running on a validator client,
 which, among other things, consists of a balance and a key-pair for identifying it~\cite{Staking}.
-One client can run several validators.
-\todo{suggetstion "a picture where all the main actors are visible and connected"}
-At each slot, the \gls{randao} algorithm is used to select a validator to be responsible for processing transactions,
+
+For a validator client to run, it needs to be run in cooperation with a consensus node client.
+A consensus node client is then able to run an unbounded number of validators.
+Having several validators running in cooperation with a single consensus node means that they all share identity with that node.
+This includes data such as IP addresses and the ID of the node.
+
+At each slot, the~\gls{randao} algorithm is used to select a validator to be responsible for processing transactions,
 including them in a block,
 and then adding this block to the blockchain.
+This procedure is also illustrated by~\autoref{fig:proposerChoice}.
 How to determine who is going to be a block proposer is explained in~\autoref{subsec:randao}.
 Along with this, the validator is also responsible for attesting blocks proposed by other validators,
 ensuring the liveness of the chain.
 
+
+\begin{figure}[t]
+    \resizebox{\columnwidth}{!}
+    {
+\begin{tikzpicture}
+    \tikzstyle{every node}=[font=\large]
+    \draw [ fill={rgb,255:red,169; green,212; blue,249} ] (9.25,11.75) circle (0.75cm) node {\large Node 1} ;
+    \draw [ fill={rgb,255:red,255; green,138; blue,138} ] (5,9.75) rectangle  node {\LARGE Val} (6.25,8.5);
+    \draw [ fill={rgb,255:red,255; green,138; blue,138} ] (7.5,9.75) rectangle  node {\LARGE Val} (8.75,8.5);
+    \draw [ fill={rgb,255:red,255; green,138; blue,138} ] (10,9.75) rectangle  node {\LARGE Val} (11.25,8.5);
+    \draw [ fill={rgb,255:red,255; green,138; blue,138} ] (12.5,9.75) rectangle  node {\LARGE Val} (13.75,8.5);
+    \draw [ fill={rgb,255:red,169; green,212; blue,249} ] (9.25,0.25) circle (0.75cm) node {\large Node 2} ;
+    \draw [ fill={rgb,255:red,255; green,138; blue,138} ] (5,3.5) rectangle  node {\LARGE Val} (6.25,2.25);
+    \draw [ fill={rgb,255:red,255; green,138; blue,138} ] (7.5,3.5) rectangle  node {\LARGE Val} (8.75,2.25);
+    \draw [ fill={rgb,255:red,255; green,138; blue,138} ] (10,3.5) rectangle  node {\LARGE Val} (11.25,2.25);
+    \draw [ fill={rgb,255:red,255; green,138; blue,138} ] (12.5,3.5) rectangle  node {\LARGE Val} (13.75,2.25);
+    \draw [dashed] (3,7.5) -- (3,3.5);
+    \draw [ fill={rgb,255:red,209; green,209; blue,209} ] (4.75,6.5) rectangle  node {\normalsize Slot 1} (6,5.25);
+    \draw [ fill={rgb,255:red,209; green,209; blue,209} ] (7.25,6.5) rectangle  node {\normalsize Slot 2} (8.5,5.25);
+    \draw [ fill={rgb,255:red,209; green,209; blue,209} ] (9.75,6.5) rectangle  node {\normalsize Slot 3} (11,5.25);
+    \draw [ fill={rgb,255:red,209; green,209; blue,209} ] (12.75,6.5) rectangle  node {\normalsize Slot 32} (14,5.25);
+    \node [font=\large] at (3,8) {Epoch n};
+    \draw [dashed] (15.5,7.5) -- (15.5,3.5);
+    \node [font=\large] at (15.5,8) {Epoch n+1};
+    \node [font=\Huge] at (11.75,6) { \ldots};
+    \draw [->, >=Latex, dashed] (5.5,3.75) -- (5.25,5);
+    \draw [->, >=Latex, dashed] (8,3.75) -- (7.75,5);
+    \draw [->, >=Latex, dashed] (10.5,8.25) -- (10.25,6.75);
+    \draw [->, >=Latex, dashed] (13.25,8.25) -- (13.25,6.75);
+    \draw [->, >=Latex] (3.5,5.75) -- (4.5,5.75);
+    \draw [->, >=Latex] (6.25,5.75) -- (7,5.75);
+    \draw [->, >=Latex] (8.75,5.75) -- (9.5,5.75);
+    \draw [->, >=Latex] (14.25,5.75) -- (15.25,5.75);
+    \draw [->, >=Latex] (8.25,0.75) -- (6.5,2);
+    \draw [->, >=Latex] (8.75,1) -- (8.25,2);
+    \draw [->, >=Latex] (9.75,1) -- (10.25,2);
+    \draw [->, >=Latex] (10.25,0.75) -- (12.25,2);
+    \draw [->, >=Latex] (8.25,11.5) -- (6.5,10);
+    \draw [->, >=Latex] (8.75,11) -- (8.5,10);
+    \draw [->, >=Latex] (9.75,11) -- (10,10);
+    \draw [->, >=Latex] (10.25,11.5) -- (12.25,10);
+\end{tikzpicture}\label{fig:proposerChoiceTikz}}
+\caption{Illustration of validators selected as proposers through an epoch.
+Two random nodes are shown, each having several validators.
+Some of these validators are chosen to propose a block in a designated slot.}
+\label{fig:proposerChoice}
+\end{figure}
 To be able to have a single validator, one must deposit 32 ETH,
 which is ~\$99,776\footnote{As of 2024-11-18 seen on \href{https://beaconcha.in/}{beaconcha.in}}.
 Having this much money at stake should be enough to ensure that a validator acts honestly.
@@ -188,18 +257,19 @@ to see the corresponding IP addresses and public keys of all the nodes that have
 
 In the paper~\gls{de-anon paper} the authors show that it is possible to deanonymize validators on the Ethereum network by observing attestations and subscribing to subnets~\cite{heimbach2024deanonymizingethereumvalidatorsp2p}.
 This paper is relevant to our work as it shows that it is possible to get information about the validators on the network.
-This paper is also the main inspiration for our attack.
+It is also the main inspiration for our attack.
+
 The paper takes advantage of the attestations, including information such as the IP of the sender node, and subnet setup to get information about the validators.
-For their setup they use a custom version of a Prysm node called RAINBOW that subscribe to all subnets, and they use to log and color the information gathered.
-This information consists of all attestations, their origin, and their origin subnet, all advertised static subscriptions of our peers and precise connection data for all nodes we interact with.
-To help speed up the discovery of the peers they also used a crawler to more quickly find the peers using the discovery protocol and the peer tables.
-In their execution of their experiment they set up four nodes spread out across four different geographical locations.
+For their setup, they use a custom version of a Prysm node called RAINBOW that subscribes to all subnets, and they use to it log peers and breaking peer inputs down into "colors" of the validators.
+This information consists of all attestations, their origin, and their origin subnet, all advertised static subscriptions of our peers and precise connection data for all nodes they interact with.
+
+To help speed up the discovery of the peers, they also used a crawler to more quickly find the peers using the discovery protocol.
+
+In their execution of their experiment, they set up four nodes spread out across four different geographical locations, two in europe, one in asia, and one in the United States.
 They then let the nodes run for three days and managed to deanonymize 235,719 validators and reached out to 11,219 peers.
 These peers were also divided into 4 categories based on their heuristic.
-Those being deanonymized where they located validators on the machine with the heuristic conditions being upheld, No validators where they did not receive a single non-backbone attestation received from the peer, and so they assume that there are no validators on the peer, 64 subnets where they never receive a non-backbone attestation from the peer which makes it impossible to deanonymize the validators and the rest where they got at least one non-backbone attestation but where not able to locate any validators on the peer.
 
-
-
+Those being, deanonymized, where they located validators on the machine; no validators, where they were not able to apply their heuristics and found no validators; 64 subnets, where they could not deanonymize the validators as the peer was subscribed to all subnets; and rest, where they could not locate any validators after applying the heuristics.
 
 \subsection{Proposer DoS Attack}\label{subsec:proposer-dos-attack}
 In this subsection, we will be describing the attack that we will be using as a basis for our experiment in ~\autoref{sec:experimental-protocol}.
