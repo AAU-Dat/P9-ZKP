@@ -23,3 +23,24 @@ Though, it does not prevent the data collection part of the attack, which is use
 
 But hindering a~\gls{dos} attack in itself is a good reason
 to look at implementing~\gls{ssle} in Ethereum as a further step to improving the security of the network.
+
+
+\subsection{More Nodes}\label{subsec:more-nodes}
+The attack we have performed in this paper is based on the fact that we are able to gather information about the validators in the network by logging attestations.
+But since every validator has multiple taske, those being broadcasting attestations, aggregating attestations, and proposing blocks, a possible solution to the attack could be to increase the number of nodes each validator uses.
+The validators could then use one node for broadcasting attestations and aggregating attestations, and another node for proposing blocks.
+This would make it harder for the attacker to~\gls{dos} the proposer when they have to propose a block since all the attestations that the attacker has gathered would be from a different node than the one that is proposing the block.
+
+This would not stop the de-anonymization part of the attack, but it would make it harder for the attacker to perform a~\gls{dos} attack on the validators.
+It would however increase the threshold for entry in the system for validators since they would have to run more nodes.
+
+\subsection{K-anonymity}\label{subsec:k-anonymity}
+Another possible solution to the de-anonymization part of the attack could be to implement a k-anonymity system.
+Using the Prism Ethereum clients, it is possible to choose trusted peers as additional relays for the messages.
+This would make at harder to de-anonymize validators as is would make it difficult to match a validator to a fixed IP address.
+The group of peers that band together will make up a k-anonymity group.
+This would then require tha attacker to attack multiple nodes at once when trying to stop a proposer from proposing a block.
+
+This solution would not stop the~\gls{dos} part of the attack, but it would make it harder for the attacker to de-anonymize validators and perform the~\gls{dos} attack.
+But this would also require new validators in the system to have a set of trusted peers that they can use as relays for their messages.
+This would also increase the threshold for entry in the system for validators as well as increase the latency within the system due to the increased number of hops the messages would have to go through.
